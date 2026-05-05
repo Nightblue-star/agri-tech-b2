@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AgriTech - Pilotage agricole de nouvelle génération.">
     <title>AgriTech – Portail</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <!-- BARRE DE NAVIGATION HORIZONTALE -->
+    <!-- ICI, NOUS AVONS CONSTRUIT VOTRE BARRE DE NAVIGATION POUR VOUS AIDER À CIRCULER FACILEMENT -->
     <nav class="navbar">
         <div class="nav-brand">
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-                    <path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z" fill="rgba(255,255,255,0.2)"/>
-                    <path d="M12 6v6l4 2"/>
-                    <circle cx="12" cy="12" r="2" fill="white"/>
+                    <path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z" fill="rgba(255,255,255,0.2)" />
+                    <path d="M12 6v6l4 2" />
+                    <circle cx="12" cy="12" r="2" fill="white" />
                 </svg>
             </div>
             <span class="logo-text">Agri<span>Tech</span></span>
@@ -46,92 +49,121 @@
         </div>
     </nav>
 
-    <!-- SECTION HERO AVEC IMAGE RÉELLE CORRIGÉE -->
-    <header class="hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80');">
+    <!-- VOICI VOTRE SECTION D'ACCUEIL, OÙ NOUS AVONS MIS EN AVANT VOS BELLES TERRES -->
+    <header class="hero"
+        style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');">
         <p>Bienvenue sur votre plateforme,</p>
         <h1>Tableau de Bord Agricole</h1>
         <div style="font-size: 14px; opacity: 0.8; margin-top: 10px;">📅 Mardi 6 mai 2025 · 📍 Beauce, Loiret</div>
     </header>
 
     <main class="main-content">
-        
-        <!-- KPI -->
+
+        <!-- NOTRE NOUVEAU CENTRE DE COMMANDE : PLUS AUDACIEUX, PLUS CLAIR -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Parcelles</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div class="stat-value">12</div>
-                    <div style="font-size: 24px;">🚜</div>
+            <div class="stat-card featured animate-fade-up delay-1">
+                <div class="stat-label" style="color: var(--primary-dark);">Surface en exploitation</div>
+                <div class="stat-value" style="color: var(--primary-dark);">284 <span style="font-size: 20px;">ha</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <div style="font-size: 13px; color: var(--primary-dark); font-weight: 700; opacity: 0.8;">+4.2%
+                        cette année</div>
+                    <div class="stat-icon-wrapper icon-gold">🌾</div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Surface totale</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div class="stat-value">284 <span style="font-size: 14px;">ha</span></div>
-                    <div style="font-size: 24px;">🌾</div>
-                </div>
+            <div class="stat-card animate-fade-up delay-2">
+                <div class="stat-label">Parcelles actives</div>
+                <div class="stat-value">12</div>
+                <div class="stat-icon-wrapper icon-purple">🚜</div>
             </div>
-            <div class="stat-card" style="border-left: 4px solid var(--danger);">
-                <div class="stat-label">Alertes actives</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div class="stat-value" style="color: var(--danger);">3</div>
-                    <div style="font-size: 24px;">🔔</div>
-                </div>
+            <div class="stat-card animate-fade-up delay-3" style="border-bottom: 5px solid var(--danger);">
+                <div class="stat-label">Alertes critiques</div>
+                <div class="stat-value" style="color: var(--danger);">03</div>
+                <div class="stat-icon-wrapper icon-pink">🔔</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Pluie (7j)</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div class="stat-value">38 <span style="font-size: 14px;">mm</span></div>
-                    <div style="font-size: 24px;">💧</div>
-                </div>
+            <div class="stat-card animate-fade-up delay-4">
+                <div class="stat-label">Pluviométrie (7j)</div>
+                <div class="stat-value">38 <span style="font-size: 16px;">mm</span></div>
+                <div class="stat-icon-wrapper icon-blue">💧</div>
             </div>
         </div>
 
         <div class="dashboard-grid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">État des cultures</div>
-                    <a href="parcelles.html" class="nav-link" style="color: var(--primary); font-size: 13px;">Voir tout →</a>
+            <!-- SECTION ÉTAT DES CULTURES : NOUS L'AVONS RENDUE PLUS SPACIEUSE -->
+            <div class="card animate-fade-up delay-5" style="padding: 0;">
+                <div style="padding: 35px 40px; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="font-family: 'Syne'; font-size: 24px; font-weight: 800;">Santé de vos cultures</h3>
+                    <a href="parcelles.html"
+                        style="background: var(--bg-app); padding: 10px 20px; border-radius: 15px; color: var(--primary); text-decoration: none; font-weight: 700; font-size: 13px; transition: var(--transition);">Gérer
+                        les parcelles →</a>
                 </div>
-                <!-- Petite bannière image dans le tableau pour le style -->
-                <div style="height: 100px; background: url('https://images.unsplash.com/photo-1444858291040-58f756a3bcd6?auto=format&fit=crop&w=1200&q=80') center center; background-size: cover;"></div>
-                <table class="data-table" style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th>Parcelle</th>
-                            <th>Culture</th>
-                            <th>Surface</th>
-                            <th>Santé</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>P-01 · Les Hauts</strong></td>
-                            <td>Blé tendre</td>
-                            <td>24.5 ha</td>
-                            <td><span class="badge" style="background:#fee2e2; color:#991b1b; padding:4px 10px; border-radius:20px; font-size:11px;">Stress hydrique</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>P-02 · La Plaine</strong></td>
-                            <td>Maïs grain</td>
-                            <td>32.0 ha</td>
-                            <td><span class="badge" style="background:#d1fae5; color:#065f46; padding:4px 10px; border-radius:20px; font-size:11px;">Optimale</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div
+                    style="height: 120px; background: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1200&auto=format&fit=crop') center center; background-size: cover; margin: 0 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                </div>
+
+                <div class="crop-health-list">
+                    <!-- Parcelle 1 -->
+                    <div class="crop-item">
+                        <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=200&auto=format&fit=crop"
+                            class="crop-thumb" alt="Blé">
+                        <div>
+                            <div style="font-weight: 800; font-family: 'Syne'; font-size: 16px;">P-01 · Les Hauts</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Blé tendre d'hiver</div>
+                        </div>
+                        <div style="font-weight: 700;">24.5 ha</div>
+                        <div class="health-meter-container">
+                            <div style="font-size: 11px; font-weight: 700; color: #991b1b;">Santé : 65%</div>
+                            <div class="health-meter-bar">
+                                <div class="health-meter-fill" style="width: 65%; background: #ef4444;"></div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status-pill" style="background:#fee2e2; color:#991b1b;">🔴 Stress
+                                hydrique</span>
+                        </div>
+                    </div>
+
+                    <!-- Parcelle 2 -->
+                    <div class="crop-item">
+                        <img src="https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=200&auto=format&fit=crop"
+                            class="crop-thumb" alt="Maïs">
+                        <div>
+                            <div style="font-weight: 800; font-family: 'Syne'; font-size: 16px;">P-02 · La Plaine</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Maïs grain</div>
+                        </div>
+                        <div style="font-weight: 700;">32.0 ha</div>
+                        <div class="health-meter-container">
+                            <div style="font-size: 11px; font-weight: 700; color: #065f46;">Santé : 98%</div>
+                            <div class="health-meter-bar">
+                                <div class="health-meter-fill" style="width: 98%; background: #10b981;"></div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status-pill" style="background:#d1fae5; color:#065f46;">🟢 Optimale</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 32px;">
-                <div class="weather-card" style="background: linear-gradient(rgba(13, 148, 136, 0.8), rgba(13, 148, 136, 0.8)), url('https://images.unsplash.com/photo-1534067783941-51c9c23ceff3?auto=format&fit=crop&w=800&q=80'); background-size: cover;">
-                    <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">Météo actuelle</div>
-                    <div style="font-size: 48px; font-weight: 800; font-family: 'Syne';">18°C</div>
-                    <div style="font-size: 13px; margin-top: 10px;">☀️ Ensoleillé · Vent 14 km/h</div>
+            <!-- SECTION ENVIRONNEMENT : NOTRE HUB MÉTÉO ET PLUIE -->
+            <div style="display: flex; flex-direction: column; gap: 40px;">
+                <div class="weather-card animate-fade-up delay-5"
+                    style="background: linear-gradient(135deg, #0d9488, #10b981), url('https://images.unsplash.com/photo-1534067783941-51c9c23ceff3?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; border-radius: 45px; padding: 40px; color: white; box-shadow: 0 30px 60px rgba(13, 148, 136, 0.3); border: 1px solid rgba(255,255,255,0.2);">
+                    <div style="font-size: 14px; opacity: 0.9; margin-bottom: 10px;">Météo actuelle</div>
+                    <div style="font-size: 64px; font-weight: 800; font-family: 'Syne'; margin-bottom: 10px;">18°C</div>
+                    <div
+                        style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 30px; display: inline-block; font-size: 13px; backdrop-filter: blur(10px);">
+                        ☀️ Ensoleillé · Vent 14 km/h</div>
                 </div>
 
-                <div class="card chart-card">
-                    <div class="card-title" style="margin-bottom: 20px;">Pluviométrie</div>
-                    <div id="chart" style="display: flex; align-items: flex-end; gap: 10px; height: 150px;"></div>
-                    <div id="chart-labels" style="display: flex; margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 10px;"></div>
+                <div class="card animate-fade-up" style="animation-delay: 0.6s;">
+                    <h3 style="font-family: 'Syne'; font-size: 20px; margin-bottom: 25px;">Pluviométrie</h3>
+                    <div id="chart"
+                        style="display: flex; align-items: flex-end; gap: 12px; height: 180px; margin-bottom: 20px;">
+                    </div>
+                    <div id="chart-labels" style="display: flex; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,4 +171,5 @@
 
     <script src="js/main.js"></script>
 </body>
+
 </html>
