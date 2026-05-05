@@ -6,6 +6,9 @@ CORS(app)
 
 parcelles = []
 observations = []
+utilisateurs = [
+    {"email": "test@agritech.fr", "password": "password123", "nom": "Jean Cultivateur"}
+]
 
 @app.route('/')
 def accueil():
@@ -85,6 +88,26 @@ def tableau_de_bord():
         "observations": observations,
         "alertes": alertes
     })
+    
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json or {}
+    email = data.get('email')
+    password = data.get('password')
+
+    # On cherche l'utilisateur dans notre liste
+    user = next((u for u in utilisateurs if u['email'] == email and u['password'] == password), None)
+
+    if user:
+        # En production, on enverrait un "Token" (JWT), mais pour le projet, 
+        # renvoyer les infos de l'utilisateur suffit pour le frontend.
+        return jsonify({
+            "status": "success",
+            "message": "Connexion réussie",
+            "user": {"nom": user['nom'], "email": user['email']}
+        }), 200
+    
+    return jsonify({"status": "error", "erreur": "Email ou mot de passe incorrect"}), 401
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
