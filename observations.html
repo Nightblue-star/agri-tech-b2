@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriTech – Observations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand"><div class="logo-icon">🌿</div><span class="logo-text">Agri<span>Tech</span></span></div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Tableau de bord</a>
+            <a href="parcelles.html" class="nav-link">Parcelles</a>
+            <a href="observations.html" class="nav-link active">Observations</a>
+            <a href="alertes.html" class="nav-link">Alertes</a>
+            <a href="meteo.html" class="nav-link">Météo</a>
+            <a href="carte.html" class="nav-link">Carte</a>
+        </div>
+        <div class="topbar-right"><div class="user-card"><div class="user-avatar">CL</div><span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span></div></div>
+    </nav>
+
+    <header class="hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?q=80&w=2000&auto=format&fit=crop');">
+        <p>Notes du terrain,</p>
+        <h1>Observations Cultures</h1>
+    </header>
+
+    <main class="main-content">
+        <div class="dashboard-grid">
+            <!-- On a mis l'historique ici pour pouvoir suivre ce qu'on a fait sur le terrain -->
+            <div>
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; margin-top: -30px;">Aujourd'hui — 6 mai 2025</div>
+                
+                <div class="card" style="padding: 24px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span class="badge" style="background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700;">🔍 Visite terrain</span>
+                        <span style="font-size: 12px; color: var(--text-muted);">09:32</span>
+                    </div>
+                    <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px;">P-01 · Les Hauts</div>
+                    <p style="font-size: 14px; line-height: 1.6;">Observation de taches sur le blé. Risque de rouille à surveiller de près cette semaine. Le sol semble encore très humide.</p>
+                </div>
+            </div>
+
+            <!-- Formulaire pour rajouter des notes sans se prendre la tête -->
+            <div class="card" style="padding: 30px; align-self: start; margin-top: -30px;">
+                <h3 class="card-title" style="margin-bottom: 20px;">Nouvelle observation</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <select style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit;">
+                        <option>Choisir une parcelle...</option>
+                        <option>P-01 · Les Hauts</option>
+                        <option>P-02 · La Plaine</option>
+                    </select>
+                    <textarea placeholder="Que remarquez-vous sur le terrain ?" style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-height: 120px; font-family: inherit; resize: vertical;"></textarea>
+                    <button class="btn-primary" style="justify-content: center; width: 100%;">Enregistrer la note</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

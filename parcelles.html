@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriTech – Parcelles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Barre de navigation commune à toutes nos pages -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon">🚜</div>
+            <span class="logo-text">Agri<span>Tech</span></span>
+        </div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Tableau de bord</a>
+            <a href="parcelles.html" class="nav-link active">Parcelles</a>
+            <a href="observations.html" class="nav-link">Observations</a>
+            <a href="alertes.html" class="nav-link">Alertes</a>
+            <a href="meteo.html" class="nav-link">Météo</a>
+            <a href="carte.html" class="nav-link">Carte</a>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <div class="user-avatar">CL</div>
+                <span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Titre de la page avec une image de champ pour l'ambiance -->
+    <header class="hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=2000&auto=format&fit=crop');">
+        <p>Vos terres en un coup d'œil,</p>
+        <h1>Gestion des Parcelles</h1>
+    </header>
+
+    <main class="main-content">
+        <!-- Ici nous avons mis les filtres pour retrouver une parcelle rapidement quand la liste sera longue -->
+        <div class="card" style="padding: 24px; margin-bottom: 32px; display: flex; gap: 15px; align-items: center; margin-top: -40px;">
+            <div style="flex: 1; position: relative;">
+                <input type="text" id="searchInput" placeholder="Chercher une parcelle par nom ou culture..." oninput="filterParcelles()" style="width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px;">
+            </div>
+            <button class="btn-primary" onclick="openModal()">+ Ajouter une parcelle</button>
+        </div>
+
+        <div class="stats-grid" id="parcellesGrid">
+            <div class="stat-card parcelle-card" data-culture="Blé" data-risk="Élevé" style="padding: 0; overflow: hidden;">
+                <div style="height: 120px; background: url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800&auto=format&fit=crop') center center; background-size: cover;"></div>
+                <div style="padding: 20px;">
+                    <div class="stat-label">P-01 · Les Hauts</div>
+                    <div style="font-size: 20px; font-weight: 700; margin: 5px 0;">Blé tendre d'hiver</div>
+                    <div style="font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between;">
+                        <span>24.5 hectares</span>
+                        <span class="badge" style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:10px; font-size:10px;">Critique</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card parcelle-card" data-culture="Maïs" data-risk="Faible" style="padding: 0; overflow: hidden;">
+                <div style="height: 120px; background: url('https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=800&auto=format&fit=crop') center center; background-size: cover;"></div>
+                <div style="padding: 20px;">
+                    <div class="stat-label">P-02 · La Plaine</div>
+                    <div style="font-size: 20px; font-weight: 700; margin: 5px 0;">Maïs grain</div>
+                    <div style="font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between;">
+                        <span>32.0 hectares</span>
+                        <span class="badge" style="background:#d1fae5; color:#065f46; padding:2px 8px; border-radius:10px; font-size:10px;">Optimal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card parcelle-card" data-culture="Colza" data-risk="Moyen" style="padding: 0; overflow: hidden;">
+                <div style="height: 120px; background: url('https://images.unsplash.com/photo-1470137237906-d8a4f71e1966?q=80&w=800&auto=format&fit=crop') center center; background-size: cover;"></div>
+                <div style="padding: 20px;">
+                    <div class="stat-label">P-03 · Le Tertre</div>
+                    <div style="font-size: 20px; font-weight: 700; margin: 5px 0;">Colza</div>
+                    <div style="font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between;">
+                        <span>18.2 hectares</span>
+                        <span class="badge" style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:10px; font-size:10px;">Suivi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+        <div class="modal" style="max-width: 450px;">
+            <h2 class="logo-text" style="color: var(--text-main); margin-bottom: 25px; font-size: 24px;">Nouvelle parcelle</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" placeholder="Nom de la parcelle (ex: Le Clos)" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                <select style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--text-muted);">
+                    <option>Type de culture</option>
+                    <option>Blé</option><option>Maïs</option><option>Colza</option><option>Orge</option>
+                </select>
+                <input type="number" placeholder="Surface en hectares" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 10px;">
+                    <button class="nav-link" style="color: var(--text-muted); padding: 0;" onclick="closeModal()">Annuler</button>
+                    <button class="btn-primary" onclick="closeModal()" style="padding: 10px 25px;">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
