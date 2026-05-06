@@ -6,7 +6,11 @@ CORS(app)
 
 parcelles = []
 observations = []
+utilisateurs = [
+    {"email": "test@agritech.fr", "password": "password123", "nom": "Jean Cultivateur"}
+]
 
+# On a mis ce point d'entrée pour vérifier que le serveur tourne bien dès le lancement.
 @app.route('/')
 def accueil():
     return jsonify({"message": "Bienvenue sur l'API Agri-Tech du projet d'etudes"})
@@ -15,6 +19,7 @@ def accueil():
 @app.route('/api/parcelles', methods=['GET', 'POST'])
 def gerer_parcelles():
     if request.method == 'POST':
+        # On récupère le JSON envoyé par le front. S'il n'y a rien, on crée un dictionnaire vide pour éviter les erreurs.
         data = request.json or {}
         if not data.get('id') or not data.get('nom') or not data.get('culture'):
             return jsonify({"erreur": "Les champs 'id', 'nom' et 'culture' sont obligatoires"}), 400
@@ -85,6 +90,26 @@ def tableau_de_bord():
         "observations": observations,
         "alertes": alertes
     })
+    
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json or {}
+    email = data.get('email')
+    password = data.get('password')
+
+    # On utilise next() pour s'arrêter dès qu'on a trouvé l'utilisateur. 
+    # C'est plus efficace que de parcourir toute la liste.
+    user = next((u for u in utilisateurs if u['email'] == email and u['password'] == password), None)
+
+    if user:
+        # On renvoie juste les infos de base pour le prototype.
+        return jsonify({
+            "status": "success",
+            "message": "Connexion réussie",
+            "user": {"nom": user['nom'], "email": user['email']}
+        }), 200
+    
+    return jsonify({"status": "error", "erreur": "Email ou mot de passe incorrect"}), 401
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
