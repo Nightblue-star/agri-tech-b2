@@ -29,7 +29,7 @@
         <div class="topbar-right">
             <div class="user-card">
                 <div class="user-avatar" id="userAvatar">CL</div>
-                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
+                <span class="user-name" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
@@ -43,17 +43,15 @@
     <main class="main-content">
 
         <!-- Carte météo principale (dernière donnée BDD) -->
-        <div class="weather-card"
-            style="margin-top:-40px; margin-bottom:32px; display:flex; justify-content:space-between;
-            align-items:center; padding:40px; box-shadow:0 20px 40px rgba(13,148,136,0.2); flex-wrap:wrap; gap:20px;">
+        <div class="weather-card weather-hero">
             <div>
-                <div style="font-size:14px; opacity:0.8; margin-bottom:5px;">📍 Beauce, Loiret</div>
-                <div style="font-size:64px; font-weight:800; font-family:'Plus Jakarta Sans',sans-serif;" id="meteo-temp">—°C</div>
-                <div style="font-size:18px; font-weight:500;" id="meteo-date">Chargement…</div>
+                <div class="weather-hero-loc">📍 Beauce, Loiret</div>
+                <div class="weather-hero-temp" id="meteo-temp">—°C</div>
+                <div class="weather-hero-date" id="meteo-date">Chargement…</div>
             </div>
-            <div style="text-align:right;">
-                <div style="font-size:56px;" id="meteo-emoji">⏳</div>
-                <div style="margin-top:10px; font-size:14px; opacity:0.85; line-height:1.8;">
+            <div class="weather-hero-right">
+                <div class="weather-hero-emoji" id="meteo-emoji">⏳</div>
+                <div class="weather-hero-details">
                     Humidité : <strong id="meteo-hum">—</strong>%<br>
                     Précipitations : <strong id="meteo-pluie">—</strong> mm
                 </div>
@@ -67,7 +65,7 @@
                 <div class="card-header">
                     <div class="card-title">Historique météo (7 derniers jours)</div>
                 </div>
-                <table class="data-table" style="width:100%; border-collapse:collapse;">
+                <table class="data-table meteo-table">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -77,41 +75,41 @@
                         </tr>
                     </thead>
                     <tbody id="meteo-tbody">
-                        <tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">Chargement…</td></tr>
+                        <tr><td colspan="4" class="meteo-table-loading">Chargement…</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Indicateurs agronomiques -->
-            <div class="card" style="padding:24px;">
-                <h3 class="card-title" style="margin-bottom:20px;">Indicateurs Agronomiques</h3>
-                <div style="display:flex; flex-direction:column; gap:24px;">
+            <div class="card indicators-card">
+                <h3 class="card-title">Indicateurs Agronomiques</h3>
+                <div class="indicators-stack">
 
                     <div id="indicateur-mildiou">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <span style="font-size:14px; font-weight:600;">Risque Mildiou</span>
-                            <span id="mildiou-label" style="font-weight:800; color:var(--danger);">Calcul…</span>
+                        <div class="indicator-row">
+                            <span class="indicator-label">Risque Mildiou</span>
+                            <span class="indicator-value danger" id="mildiou-label">Calcul…</span>
                         </div>
-                        <div style="height:10px; background:#f1f5f9; border-radius:5px; overflow:hidden;">
-                            <div id="mildiou-bar" style="width:0%; height:100%; background:var(--danger); transition:width 0.8s;"></div>
+                        <div class="indicator-bar-track">
+                            <div class="indicator-bar-fill danger" id="mildiou-bar"></div>
                         </div>
                     </div>
 
                     <div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <span style="font-size:14px; font-weight:600;">Humidité moyenne (7j)</span>
-                            <span id="hum-moy-label" style="font-weight:800; color:var(--primary);">—</span>
+                        <div class="indicator-row">
+                            <span class="indicator-label">Humidité moyenne (7j)</span>
+                            <span class="indicator-value primary" id="hum-moy-label">—</span>
                         </div>
-                        <div style="height:10px; background:#f1f5f9; border-radius:5px; overflow:hidden;">
-                            <div id="hum-moy-bar" style="width:0%; height:100%; background:var(--primary); transition:width 0.8s;"></div>
+                        <div class="indicator-bar-track">
+                            <div class="indicator-bar-fill primary" id="hum-moy-bar"></div>
                         </div>
                     </div>
 
-                    <div style="padding:15px; background:#f8fafc; border-radius:12px; border:1px solid var(--border);">
-                        <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px;">
+                    <div class="advice-box">
+                        <div class="advice-label">
                             Conseil du jour
                         </div>
-                        <p style="font-size:13px; color:var(--text-main); margin:0;" id="conseil-text">
+                        <p class="advice-text" id="conseil-text">
                             Chargement des données météo…
                         </p>
                     </div>
