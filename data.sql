@@ -4,10 +4,11 @@ USE agriculture_db;
 
 SET FOREIGN_KEY_CHECKS = 0; 
 
+-- Table utilisateurs
 INSERT INTO utilisateur (id, nom, email, mot_de_passe, role) VALUES (1, 'Admin', 'admin@ferme.com', 'admin123', 'admin');
 INSERT INTO utilisateur (id, nom, email, mot_de_passe, role) VALUES (2, 'Jean Agro', 'jean@ferme.com', 'agro456', 'agriculteur');
 
-
+-- Table Parcelles
 INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (1, 'Parcelle 1', 'Zone A', 2.45);
 INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (2, 'Parcelle 2', 'Zone B', 4.49);
 INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (3, 'Parcelle 3', 'Zone C', 2.15);
@@ -19,7 +20,7 @@ INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (8, 'Parcelle 8
 INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (9, 'Parcelle 9', 'Zone D', 4.07);
 INSERT INTO parcelles (id, nom, localisation, surface_ha) VALUES (10, 'Parcelle 10', 'Zone E', 2.37);
 
-
+-- Table cultures
 INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (1, 'Orge', '2026-03-15', 1);
 INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (2, 'Tournesol', '2026-03-20', 2);
 INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (3, 'Blé', '2026-03-19', 3);
@@ -31,7 +32,7 @@ INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (8, 'Tournesol',
 INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (9, 'Colza', '2026-03-12', 9);
 INSERT INTO cultures (id, type, date_semis, parcelle_id) VALUES (10, 'Colza', '2026-03-17', 10);
 
-
+-- Table meteo
 INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-03-01', 17, 47, 0);
 INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-03-02', 14, 74, 5);
 INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-03-03', 29, 39, 30);
@@ -93,7 +94,7 @@ INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-04-27', 
 INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-04-28', 27, 89, 0);
 INSERT INTO meteo (date, temperature, humidite, pluie_mm) VALUES ('2026-04-29', 23, 56, 20);
 
-
+-- Table observations
 INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-03-02', 'OK', 2, 'Sol sec');
 INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-03-15', 'Risque maladie', 3, 'Sol sec');
 INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-04-17', 'OK', 8, 'Sol sec');
@@ -195,7 +196,7 @@ INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-04
 INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-03-15', 'Risque maladie', 7, 'Rien à signaler');
 INSERT INTO observations (date, etat, parcelle_id, commentaire) VALUES ('2026-03-06', 'Maladie détectée', 3, 'Rien à signaler');
 
-
+-- Table alertes
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-04-11', 'Stress hydrique', 3, 2);
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-04', 'Stress hydrique', 8, 1);
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-29', 'Stress hydrique', 4, 1);
@@ -246,4 +247,10 @@ INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-04-09', 'Ris
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-16', 'Stress hydrique', 3, 3);
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-22', 'Risque maladie', 5, 2);
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-14', 'Risque maladie', 10, 2);
+
+-- Ajouter l'id à meteo et lee mettre en clef primaire
+ALTER TABLE meteo
+DROP PRIMARY KEY,
+ADD COLUMN id_meteo INT AUTO_INCREMENT PRIMARY KEY;
+
 
