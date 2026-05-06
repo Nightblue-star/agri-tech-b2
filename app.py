@@ -180,11 +180,11 @@ def init_db():
 
 # ─── Pages HTML ────────────────────────────────────────────────────────────────
 
-@app.route('/')
+@app.route('/home')
 def index():
     return render_template('index.html')
 
-@app.route('/connexion')
+@app.route('/')
 def connexion():
     return render_template('connexion.html')
 
