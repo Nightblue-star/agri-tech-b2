@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriTech – Météo agricole et prévisions pour vos parcelles.">
     <title>AgriTech – Météo Agricole</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,14 +13,13 @@
 
 <body>
 
-    <!-- NAVBAR HORIZONTALE -->
     <nav class="navbar">
         <div class="nav-brand">
             <div class="logo-icon">⛅</div>
             <span class="logo-text">Agri<span>Tech</span></span>
         </div>
         <div class="nav-menu">
-            <a href="/" class="nav-link">Tableau de bord</a>
+            <a href="/home" class="nav-link">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
             <a href="/observations" class="nav-link">Observations</a>
             <a href="/alertes" class="nav-link">Alertes</a>
@@ -28,127 +28,184 @@
         </div>
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar">CL</div>
-                <span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span>
+                <div class="user-avatar" id="userAvatar">CL</div>
+                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
 
-    <!-- SECTION HERO -->
     <header class="hero"
         style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2000&auto=format&fit=crop');">
         <p>Conditions en temps réel,</p>
-        <h1>Météo & Prévisions</h1>
+        <h1>Météo &amp; Prévisions</h1>
     </header>
 
     <main class="main-content">
-        <!-- Un petit widget pour avoir la météo locale en direct -->
+
+        <!-- Carte météo principale (dernière donnée BDD) -->
         <div class="weather-card"
-            style="margin-top: -40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; padding: 40px; box-shadow: 0 20px 40px rgba(13, 148, 136, 0.2);">
+            style="margin-top:-40px; margin-bottom:32px; display:flex; justify-content:space-between;
+            align-items:center; padding:40px; box-shadow:0 20px 40px rgba(13,148,136,0.2); flex-wrap:wrap; gap:20px;">
             <div>
-                <div style="font-size: 14px; opacity: 0.8; margin-bottom: 5px;">📍 Beauce, Loiret</div>
-                <div style="font-size: 64px; font-weight: 800; font-family: 'Syne';">18°C</div>
-                <div style="font-size: 20px; font-weight: 500;">Ensoleillé avec quelques nuages</div>
+                <div style="font-size:14px; opacity:0.8; margin-bottom:5px;">📍 Beauce, Loiret</div>
+                <div style="font-size:64px; font-weight:800; font-family:'Plus Jakarta Sans',sans-serif;" id="meteo-temp">—°C</div>
+                <div style="font-size:18px; font-weight:500;" id="meteo-date">Chargement…</div>
             </div>
-            <div style="text-align: right;">
-                <div style="font-size: 60px;">🌤️</div>
-                <div style="margin-top: 10px; font-size: 14px; opacity: 0.8; line-height: 1.6;">
-                    Humidité : 72%<br>
-                    Vent : 14 km/h Sud-Ouest<br>
-                    Précipitations : 0 mm
+            <div style="text-align:right;">
+                <div style="font-size:56px;" id="meteo-emoji">⏳</div>
+                <div style="margin-top:10px; font-size:14px; opacity:0.85; line-height:1.8;">
+                    Humidité : <strong id="meteo-hum">—</strong>%<br>
+                    Précipitations : <strong id="meteo-pluie">—</strong> mm
                 </div>
             </div>
         </div>
 
         <div class="dashboard-grid">
-            <!-- On suit les prévisions ici pour savoir quand on peut aller bosser dans les champs -->
+
+            <!-- Tableau des 7 derniers jours depuis la BDD -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Prévisions 7 jours</div>
+                    <div class="card-title">Historique météo (7 derniers jours)</div>
                 </div>
-                <table class="data-table" style="width: 100%; border-collapse: collapse;">
+                <table class="data-table" style="width:100%; border-collapse:collapse;">
                     <thead>
                         <tr>
-                            <th>Jour</th>
-                            <th>T° Max</th>
-                            <th>T° Min</th>
+                            <th>Date</th>
+                            <th>Temp.</th>
+                            <th>Humidité</th>
                             <th>Pluie</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Mercredi</strong></td>
-                            <td>21°C</td>
-                            <td>13°C</td>
-                            <td>0 mm</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Jeudi</strong></td>
-                            <td>15°C</td>
-                            <td>12°C</td>
-                            <td>12 mm</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Vendredi</strong></td>
-                            <td>14°C</td>
-                            <td>11°C</td>
-                            <td>8 mm</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Samedi</strong></td>
-                            <td>17°C</td>
-                            <td>10°C</td>
-                            <td>2 mm</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Dimanche</strong></td>
-                            <td>19°C</td>
-                            <td>12°C</td>
-                            <td>0 mm</td>
-                        </tr>
+                    <tbody id="meteo-tbody">
+                        <tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">Chargement…</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Nous avons mis ces indicateurs pour nous aider à prendre les bonnes décisions tous les jours -->
-            <div class="card" style="padding: 24px;">
-                <h3 class="card-title" style="margin-bottom: 20px;">Indicateurs Agronomiques</h3>
-                <div style="display: flex; flex-direction: column; gap: 24px;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="font-size: 14px; font-weight: 600;">Risque Mildiou</span>
-                            <span style="font-weight: 800; color: var(--danger);">CRITIQUE (87%)</span>
+            <!-- Indicateurs agronomiques -->
+            <div class="card" style="padding:24px;">
+                <h3 class="card-title" style="margin-bottom:20px;">Indicateurs Agronomiques</h3>
+                <div style="display:flex; flex-direction:column; gap:24px;">
+
+                    <div id="indicateur-mildiou">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <span style="font-size:14px; font-weight:600;">Risque Mildiou</span>
+                            <span id="mildiou-label" style="font-weight:800; color:var(--danger);">Calcul…</span>
                         </div>
-                        <div style="height: 10px; background: #f1f5f9; border-radius: 5px; overflow: hidden;">
-                            <div style="width: 87%; height: 100%; background: var(--danger);"></div>
+                        <div style="height:10px; background:#f1f5f9; border-radius:5px; overflow:hidden;">
+                            <div id="mildiou-bar" style="width:0%; height:100%; background:var(--danger); transition:width 0.8s;"></div>
                         </div>
                     </div>
 
                     <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="font-size: 14px; font-weight: 600;">Évapotranspiration</span>
-                            <span style="font-weight: 800; color: var(--primary);">3.2 mm/jour</span>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <span style="font-size:14px; font-weight:600;">Humidité moyenne (7j)</span>
+                            <span id="hum-moy-label" style="font-weight:800; color:var(--primary);">—</span>
                         </div>
-                        <div style="height: 10px; background: #f1f5f9; border-radius: 5px; overflow: hidden;">
-                            <div style="width: 45%; height: 100%; background: var(--primary);"></div>
+                        <div style="height:10px; background:#f1f5f9; border-radius:5px; overflow:hidden;">
+                            <div id="hum-moy-bar" style="width:0%; height:100%; background:var(--primary); transition:width 0.8s;"></div>
                         </div>
                     </div>
 
-                    <div
-                        style="padding: 15px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border);">
-                        <div
-                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px;">
-                            Conseil du jour</div>
-                        <p style="font-size: 13px; color: var(--text-main);">Les conditions sont favorables au
-                            développement des maladies fongiques. Nous vous conseillons de surveiller vos parcelles de
-                            blé demain matin.</p>
+                    <div style="padding:15px; background:#f8fafc; border-radius:12px; border:1px solid var(--border);">
+                        <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px;">
+                            Conseil du jour
+                        </div>
+                        <p style="font-size:13px; color:var(--text-main); margin:0;" id="conseil-text">
+                            Chargement des données météo…
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function meteoEmoji(temp, humidite, pluie) {
+            if (pluie > 10) return '🌧️';
+            if (pluie > 0) return '🌦️';
+            if (humidite > 80) return '☁️';
+            if (temp > 25) return '☀️';
+            if (temp > 15) return '🌤️';
+            return '❄️';
+        }
+
+        async function loadMeteo() {
+            try {
+                const res = await fetch('/api/meteo');
+                const data = await res.json();
+                if (!data.length) return;
+
+                // Dernière entrée = la plus récente (order DESC)
+                const last = data[0];
+                document.getElementById('meteo-temp').textContent = last.temperature + '°C';
+                document.getElementById('meteo-date').textContent = '📅 ' + last.date;
+                document.getElementById('meteo-hum').textContent = last.humidite;
+                document.getElementById('meteo-pluie').textContent = last.pluie_mm;
+                document.getElementById('meteo-emoji').textContent = meteoEmoji(last.temperature, last.humidite, last.pluie_mm);
+
+                // Tableau des 7 jours
+                const tbody = document.getElementById('meteo-tbody');
+                tbody.innerHTML = data.map(m => {
+                    const tempColor = m.temperature > 25 ? '#dc2626' : m.temperature < 10 ? '#2563eb' : '#16a34a';
+                    return `<tr>
+                        <td><strong>${m.date}</strong></td>
+                        <td style="font-weight:700; color:${tempColor};">${m.temperature}°C</td>
+                        <td>${m.humidite}%</td>
+                        <td>${m.pluie_mm} mm</td>
+                    </tr>`;
+                }).join('');
+
+                // Calcul indicateurs agronomiques
+                const humMoy = Math.round(data.reduce((s,m) => s + m.humidite, 0) / data.length);
+                const tempMoy = Math.round(data.reduce((s,m) => s + m.temperature, 0) / data.length);
+
+                // Risque mildiou : élevé si humidité > 70% ET temp > 15°C
+                const risqueMildiou = Math.min(100, Math.round(
+                    (humMoy > 70 ? (humMoy - 70) * 2 : 0) + (tempMoy > 15 ? (tempMoy - 15) * 2 : 0)
+                ));
+                const mildiouColor = risqueMildiou > 60 ? 'var(--danger)' : risqueMildiou > 30 ? '#f59e0b' : '#10b981';
+                const mildiouLabel = risqueMildiou > 60 ? 'CRITIQUE (' + risqueMildiou + '%)' : risqueMildiou > 30 ? 'MODÉRÉ (' + risqueMildiou + '%)' : 'FAIBLE (' + risqueMildiou + '%)';
+
+                document.getElementById('mildiou-label').textContent = mildiouLabel;
+                document.getElementById('mildiou-label').style.color = mildiouColor;
+                document.getElementById('mildiou-bar').style.width = risqueMildiou + '%';
+                document.getElementById('mildiou-bar').style.background = mildiouColor;
+
+                document.getElementById('hum-moy-label').textContent = humMoy + '%';
+                document.getElementById('hum-moy-bar').style.width = humMoy + '%';
+
+                // Conseil
+                let conseil = '';
+                if (risqueMildiou > 60) {
+                    conseil = 'Conditions très favorables au développement des maladies fongiques. Surveillance renforcée recommandée sur toutes les parcelles de blé et orge.';
+                } else if (humMoy > 70) {
+                    conseil = 'Humidité élevée sur la semaine. Vérifier l\'état sanitaire des cultures sensibles.';
+                } else if (tempMoy > 25) {
+                    conseil = 'Températures élevées. Surveiller le stress hydrique, notamment sur les parcelles de maïs.';
+                } else {
+                    conseil = 'Conditions météorologiques favorables. Bon moment pour les interventions de terrain.';
+                }
+                document.getElementById('conseil-text').textContent = conseil;
+
+            } catch(e) {
+                console.error('Erreur météo:', e);
+                document.getElementById('meteo-temp').textContent = '—';
+                document.getElementById('conseil-text').textContent = '⚠️ Impossible de charger les données météo.';
+            }
+        }
+
+        // Infos utilisateur
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.nom) {
+            const initials = user.nom.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = user.nom;
+        }
+
+        loadMeteo();
+    </script>
 </body>
 
 </html>

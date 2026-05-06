@@ -3,34 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriTech - Connexion à votre espace agricole.">
     <title>Connexion - AgriTech</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body style="display:flex; align-items:center; justify-content:center; min-height:100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);">
 
-<div class="login-card">
-    <h2>AgriTech Login</h2>
-    <form id="loginForm">
-        <input type="email" id="email" placeholder="Email (test@agritech.fr)" required>
-        <input type="password" id="password" placeholder="Mot de passe (password123)" required>
-        <button type="submit">Se connecter</button>
+<div class="login-card" style="background:white; border-radius:20px; padding:48px 40px;
+    width:100%; max-width:420px; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
+    <div style="text-align:center; margin-bottom:32px;">
+        <div style="width:56px; height:56px; background:var(--primary); border-radius:16px;
+            display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:28px;">🌾</div>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:26px; font-weight:800; color:var(--text-main);">AgriTech</h1>
+        <p style="color:var(--text-muted); font-size:14px; margin-top:6px;">Accédez à votre portail agricole</p>
+    </div>
+
+    <form id="loginForm" style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+            <label style="font-size:13px; font-weight:600; color:var(--text-main); display:block; margin-bottom:6px;">Email</label>
+            <input type="email" id="email" placeholder="test@agritech.fr" required
+                style="width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
+                    font-size:14px; font-family:inherit; box-sizing:border-box; transition:border 0.2s;"
+                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+            <label style="font-size:13px; font-weight:600; color:var(--text-main); display:block; margin-bottom:6px;">Mot de passe</label>
+            <input type="password" id="password" placeholder="password123" required
+                style="width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
+                    font-size:14px; font-family:inherit; box-sizing:border-box; transition:border 0.2s;"
+                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn"
+            style="width:100%; justify-content:center; padding:14px; font-size:15px; margin-top:8px; border:none; cursor:pointer;">
+            Se connecter
+        </button>
     </form>
-    <div id="message"></div>
+
+    <div id="message" style="margin-top:16px; padding:12px 16px; border-radius:10px; font-size:14px;
+        font-weight:600; display:none;"></div>
+
+    <div style="margin-top:24px; padding:16px; background:#f8fafc; border-radius:12px; font-size:12px; color:var(--text-muted);">
+        <strong>Compte de test :</strong><br>
+        Email : test@agritech.fr<br>
+        Mot de passe : password123
+    </div>
 </div>
 
 <script>
     const loginForm = document.getElementById('loginForm');
     const messageDiv = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
 
-    // on empeche la page de s'actualiser a chaque fois qu'on click sur connexion
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        submitBtn.textContent = 'Connexion…';
+        submitBtn.disabled = true;
 
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -39,16 +76,27 @@
             const data = await response.json();
 
             if (response.ok) {
-                
                 localStorage.setItem('user', JSON.stringify(data.user));
-                alert("Connexion réussie ! Bienvenue " + data.user.nom);
-                
+                messageDiv.style.display = 'block';
+                messageDiv.style.background = '#d1fae5';
+                messageDiv.style.color = '#065f46';
+                messageDiv.textContent = '✅ Connexion réussie ! Redirection…';
+                setTimeout(() => { window.location.href = '/home'; }, 600);
             } else {
-                messageDiv.innerText = data.erreur || "Erreur de connexion";
+                messageDiv.style.display = 'block';
+                messageDiv.style.background = '#fee2e2';
+                messageDiv.style.color = '#991b1b';
+                messageDiv.textContent = '❌ ' + (data.erreur || 'Erreur de connexion');
+                submitBtn.textContent = 'Se connecter';
+                submitBtn.disabled = false;
             }
         } catch (error) {
-            messageDiv.innerText = "Le serveur est éteint ou inaccessible.";
-            console.error("Erreur fetch:", error);
+            messageDiv.style.display = 'block';
+            messageDiv.style.background = '#fee2e2';
+            messageDiv.style.color = '#991b1b';
+            messageDiv.textContent = '⚠️ Le serveur est inaccessible. Lancez app.py.';
+            submitBtn.textContent = 'Se connecter';
+            submitBtn.disabled = false;
         }
     });
 </script>

@@ -4,20 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriTech – Carte interactive de vos parcelles agricoles.">
     <title>AgriTech – Carte</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        /* On a dû faire quelques réglages pour que la carte prenne bien tout l'écran */
         .map-container {
             height: calc(100vh - 80px);
-            /* On retire la hauteur de la barre du haut pour pas avoir de scroll bizarre */
             display: flex;
             position: relative;
             overflow: hidden;
         }
-
         .map-sidebar-alt {
             width: 320px;
             background: white;
@@ -25,102 +23,283 @@
             z-index: 10;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
-
         .map-view-alt {
             flex: 1;
             background: #cbd5e1;
             position: relative;
+            overflow: hidden;
+        }
+        .parcelle-list-item {
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            border-left: 4px solid var(--border);
+            transition: background 0.15s, transform 0.15s;
+            background: #f8fafc;
+        }
+        .parcelle-list-item:hover {
+            background: #e0f2fe;
+            transform: translateX(3px);
+        }
+        .parcelle-list-item.selected {
+            background: #e0f2fe;
+            border-left-color: var(--primary);
         }
     </style>
 </head>
 
-<body style="overflow: hidden;">
-    <!-- On bloque le scroll ici pour que ce soit plus simple de bouger la carte à la souris -->
+<body style="overflow:hidden;">
 
     <nav class="navbar">
         <div class="nav-brand">
-            <div class="logo-icon">🗺️</div><span class="logo-text">Agri<span>Tech</span></span>
+            <div class="logo-icon">🗺️</div>
+            <span class="logo-text">Agri<span>Tech</span></span>
         </div>
         <div class="nav-menu">
-            <a href="/" class="nav-link">Tableau de bord</a>
+            <a href="/home" class="nav-link">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
             <a href="/observations" class="nav-link">Observations</a>
             <a href="/alertes" class="nav-link">Alertes</a>
-            <a href="/meteo" class="nav-link active">Météo</a>
-            <a href="/carte" class="nav-link">Carte</a>
+            <a href="/meteo" class="nav-link">Météo</a>
+            <a href="/carte" class="nav-link active">Carte</a>
         </div>
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar">CL</div><span
-                    style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span>
+                <div class="user-avatar" id="userAvatar">CL</div>
+                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
 
     <div class="map-container">
-        <!-- Un petit panneau pour choisir la parcelle à regarder -->
+
+        <!-- Panneau latéral : liste des parcelles depuis l'API -->
         <aside class="map-sidebar-alt">
-            <div style="padding: 24px; border-bottom: 1px solid var(--border);">
+            <div style="padding:24px; border-bottom:1px solid var(--border);">
                 <h3 class="card-title">Exploration</h3>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Sélectionnez une zone sur la
-                    carte</p>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">
+                    Cliquez sur une zone ou sélectionnez ci-dessous
+                </p>
+                <input type="text" id="mapSearch" placeholder="Rechercher une parcelle…"
+                    oninput="filterSidebar()"
+                    style="width:100%; margin-top:12px; padding:9px 12px; border:1.5px solid var(--border);
+                    border-radius:8px; font-size:13px; font-family:inherit; box-sizing:border-box;">
             </div>
-            <div style="padding: 20px; overflow-y: auto; flex: 1;">
-                <div class="stat-card"
-                    style="padding: 15px; margin-bottom: 10px; cursor: pointer; border-left: 4px solid var(--danger);"
-                    onclick="selectParcelleMap('P01')">
-                    <div style="font-weight: 700; font-size: 14px;">P-01 · Les Hauts</div>
-                    <div style="font-size: 11px; color: var(--text-muted);">Blé · 24.5 ha</div>
-                </div>
-                <div class="stat-card"
-                    style="padding: 15px; margin-bottom: 10px; cursor: pointer; border-left: 4px solid var(--secondary);"
-                    onclick="selectParcelleMap('P02')">
-                    <div style="font-weight: 700; font-size: 14px;">P-02 · La Plaine</div>
-                    <div style="font-size: 11px; color: var(--text-muted);">Maïs · 32.0 ha</div>
-                </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;" id="sidebarList">
+                <p style="color:var(--text-muted); font-size:13px;">Chargement…</p>
+            </div>
+
+            <!-- Tooltip infos parcelle sélectionnée -->
+            <div id="sidebar-detail" style="padding:20px; border-top:1px solid var(--border); display:none; background:#f8fafc;">
+                <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px;">Parcelle sélectionnée</div>
+                <div style="font-weight:800; font-size:17px; color:var(--text-main); margin-bottom:4px;" id="detail-nom">—</div>
+                <div style="font-size:13px; color:var(--text-muted);" id="detail-culture">—</div>
+                <div style="font-size:13px; color:var(--text-muted);" id="detail-surface">—</div>
+                <div style="font-size:13px; color:var(--text-muted);" id="detail-localisation">—</div>
             </div>
         </aside>
 
-        <!-- Ici c'est le SVG qui nous sert de carte interactive -->
+        <!-- Vue carte SVG -->
         <main class="map-view-alt">
-            <svg id="mapSvg" width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
-                <rect width="800" height="600" fill="#cbd5e1" />
+            <svg id="mapSvg" width="100%" height="100%" viewBox="0 0 900 650" preserveAspectRatio="xMidYMid meet"
+                style="transform-origin:center; transition:transform 0.2s;">
 
-                <!-- On a dessiné les parcelles à la main pour pouvoir cliquer dessus -->
-                <polygon id="P01" points="100,100 250,80 280,200 120,220" fill="#ef4444" fill-opacity="0.6"
-                    stroke="#b91c1c" stroke-width="1" class="parcelle-poly" data-name="P-01 · Les Hauts"
-                    data-culture="Blé" data-ha="24.5" onclick="selectParcelleMap('P01')" style="cursor: pointer;" />
+                <!-- Fond terrain -->
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#b2bec3" stroke-width="0.4"/>
+                    </pattern>
+                </defs>
+                <rect width="900" height="650" fill="#dde6ed"/>
+                <rect width="900" height="650" fill="url(#grid)"/>
 
-                <polygon id="P02" points="350,150 500,130 530,250 380,270" fill="#10b981" fill-opacity="0.6"
-                    stroke="#047857" stroke-width="1" class="parcelle-poly" data-name="P-02 · La Plaine"
-                    data-culture="Maïs" data-ha="32.0" onclick="selectParcelleMap('P02')" style="cursor: pointer;" />
+                <!-- Rivière décorative -->
+                <path d="M 0 500 Q 200 480 400 510 Q 600 540 900 500" fill="none" stroke="#60a5fa" stroke-width="6" opacity="0.5"/>
+                <text x="150" y="520" font-size="11" fill="#3b82f6" font-style="italic" opacity="0.7">Rivière de la Beauce</text>
+
+                <!-- Parcelles SVG — seront colorées dynamiquement par JS -->
+                <polygon id="svg-P1" points="80,60 220,45 250,170 95,185"
+                    fill="#10b981" fill-opacity="0.6" stroke="#047857" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(1)"/>
+                <text x="150" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="white">P1</text>
+
+                <polygon id="svg-P2" points="300,80 440,65 470,200 320,215"
+                    fill="#3b82f6" fill-opacity="0.6" stroke="#1d4ed8" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(2)"/>
+                <text x="385" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="white">P2</text>
+
+                <polygon id="svg-P3" points="520,50 660,35 690,160 540,175"
+                    fill="#f59e0b" fill-opacity="0.6" stroke="#b45309" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(3)"/>
+                <text x="605" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="white">P3</text>
+
+                <polygon id="svg-P4" points="720,70 860,55 880,180 740,195"
+                    fill="#8b5cf6" fill-opacity="0.6" stroke="#6d28d9" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(4)"/>
+                <text x="800" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="white">P4</text>
+
+                <polygon id="svg-P5" points="60,230 200,215 225,340 80,355"
+                    fill="#ef4444" fill-opacity="0.6" stroke="#b91c1c" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(5)"/>
+                <text x="140" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="white">P5</text>
+
+                <polygon id="svg-P6" points="260,210 400,195 425,330 280,345"
+                    fill="#06b6d4" fill-opacity="0.6" stroke="#0e7490" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(6)"/>
+                <text x="345" y="265" text-anchor="middle" font-size="12" font-weight="700" fill="white">P6</text>
+
+                <polygon id="svg-P7" points="460,200 600,185 625,315 480,330"
+                    fill="#10b981" fill-opacity="0.6" stroke="#047857" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(7)"/>
+                <text x="545" y="260" text-anchor="middle" font-size="12" font-weight="700" fill="white">P7</text>
+
+                <polygon id="svg-P8" points="660,190 800,175 825,305 680,320"
+                    fill="#f97316" fill-opacity="0.6" stroke="#c2410c" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(8)"/>
+                <text x="745" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="white">P8</text>
+
+                <polygon id="svg-P9" points="80,380 230,365 255,450 100,465"
+                    fill="#d946ef" fill-opacity="0.6" stroke="#a21caf" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(9)"/>
+                <text x="167" y="418" text-anchor="middle" font-size="12" font-weight="700" fill="white">P9</text>
+
+                <polygon id="svg-P10" points="290,360 440,345 465,440 310,455"
+                    fill="#64748b" fill-opacity="0.6" stroke="#334155" stroke-width="2"
+                    class="parcelle-poly" style="cursor:pointer;" onclick="selectSvgParcelle(10)"/>
+                <text x="377" y="400" text-anchor="middle" font-size="12" font-weight="700" fill="white">P10</text>
             </svg>
 
-            <!-- Les boutons de zoom parce que c'est plus pratique -->
-            <div
-                style="position: absolute; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px;">
+            <!-- Boutons Zoom -->
+            <div style="position:absolute; bottom:30px; right:30px; display:flex; flex-direction:column; gap:10px;">
                 <button class="btn-primary"
-                    style="width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 20px;"
-                    onclick="zoom(1.2)">+</button>
+                    style="width:44px; height:44px; padding:0; justify-content:center; font-size:22px; border:none; cursor:pointer;"
+                    onclick="zoom(1.25)" title="Zoom avant">+</button>
                 <button class="btn-primary"
-                    style="width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 20px;"
-                    onclick="zoom(0.8)">-</button>
+                    style="width:44px; height:44px; padding:0; justify-content:center; font-size:22px; border:none; cursor:pointer;"
+                    onclick="zoom(0.8)" title="Zoom arrière">−</button>
+                <button class="btn-primary"
+                    style="width:44px; height:44px; padding:0; justify-content:center; font-size:16px; border:none; cursor:pointer;"
+                    onclick="resetZoom()" title="Réinitialiser">⟳</button>
             </div>
 
-            <!-- C'est ici qu'on affiche les infos quand on passe la souris sur un champ -->
-            <div id="tooltip" class="card"
-                style="position: absolute; top: 30px; left: 30px; padding: 20px; display: none; pointer-events: none; min-width: 200px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                <div id="tt-title"
-                    style="font-weight: 800; font-size: 16px; margin-bottom: 5px; color: var(--primary-dark);">Nom de la
-                    parcelle</div>
-                <div style="font-size: 13px; color: var(--text-main);"><span id="tt-culture">...</span></div>
-                <div style="font-size: 13px; color: var(--text-muted);"><span id="tt-ha">...</span></div>
+            <!-- Tooltip survol sur la carte -->
+            <div id="mapTooltip" class="card"
+                style="position:absolute; top:20px; right:20px; padding:18px 22px; display:none;
+                pointer-events:none; min-width:200px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+                <div id="tt-nom" style="font-weight:800; font-size:16px; margin-bottom:4px; color:var(--primary-dark);">—</div>
+                <div id="tt-culture" style="font-size:13px; color:var(--text-main);">—</div>
+                <div id="tt-surface" style="font-size:13px; color:var(--text-muted);">—</div>
             </div>
         </main>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        let parcelles = [];
+        let selectedId = null;
+
+        async function loadCarteData() {
+            try {
+                const res = await fetch('/api/parcelles');
+                parcelles = await res.json();
+                buildSidebar(parcelles);
+            } catch(e) {
+                document.getElementById('sidebarList').innerHTML =
+                    '<p style="color:#ef4444; font-size:13px;">⚠️ Serveur inaccessible.</p>';
+            }
+        }
+
+        function buildSidebar(liste) {
+            const container = document.getElementById('sidebarList');
+            if (!liste.length) {
+                container.innerHTML = '<p style="color:var(--text-muted); font-size:13px;">Aucune parcelle disponible.</p>';
+                return;
+            }
+            container.innerHTML = liste.map(p => `
+                <div class="parcelle-list-item" id="side-${p.id}" onclick="selectSvgParcelle(${p.id})">
+                    <div style="font-weight:700; font-size:14px; color:var(--text-main);">${p.nom}</div>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+                        ${p.culture || '—'} · ${p.surface_ha} ha · ${p.localisation || '—'}
+                    </div>
+                </div>`).join('');
+        }
+
+        function filterSidebar() {
+            const q = document.getElementById('mapSearch').value.toLowerCase();
+            const filtered = parcelles.filter(p =>
+                p.nom.toLowerCase().includes(q) ||
+                (p.culture || '').toLowerCase().includes(q) ||
+                (p.localisation || '').toLowerCase().includes(q)
+            );
+            buildSidebar(filtered);
+        }
+
+        function selectSvgParcelle(id) {
+            selectedId = id;
+            const p = parcelles.find(x => x.id === id);
+
+            // Réinitialiser tous les polygones
+            document.querySelectorAll('.parcelle-poly').forEach(el => {
+                el.style.fillOpacity = '0.6';
+                el.style.strokeWidth = '2';
+            });
+
+            // Mettre en valeur le polygone sélectionné
+            const poly = document.getElementById('svg-P' + id);
+            if (poly) {
+                poly.style.fillOpacity = '0.9';
+                poly.style.strokeWidth = '4';
+            }
+
+            // Mettre en valeur dans le sidebar
+            document.querySelectorAll('.parcelle-list-item').forEach(el => el.classList.remove('selected'));
+            const sideItem = document.getElementById('side-' + id);
+            if (sideItem) {
+                sideItem.classList.add('selected');
+                sideItem.scrollIntoView({ behavior:'smooth', block:'nearest' });
+            }
+
+            // Afficher le panneau détail
+            if (p) {
+                document.getElementById('sidebar-detail').style.display = 'block';
+                document.getElementById('detail-nom').textContent = p.nom;
+                document.getElementById('detail-culture').textContent = '🌱 Culture : ' + (p.culture || '—');
+                document.getElementById('detail-surface').textContent = '📐 Surface : ' + p.surface_ha + ' ha';
+                document.getElementById('detail-localisation').textContent = '📍 Zone : ' + (p.localisation || '—');
+
+                // Tooltip carte
+                document.getElementById('mapTooltip').style.display = 'block';
+                document.getElementById('tt-nom').textContent = p.nom;
+                document.getElementById('tt-culture').textContent = '🌱 ' + (p.culture || '—');
+                document.getElementById('tt-surface').textContent = '📐 ' + p.surface_ha + ' ha';
+            }
+        }
+
+        // Zoom
+        let mapScale = 1;
+        function zoom(factor) {
+            const svg = document.getElementById('mapSvg');
+            mapScale = Math.max(0.4, Math.min(4, mapScale * factor));
+            svg.style.transform = 'scale(' + mapScale + ')';
+        }
+        function resetZoom() {
+            mapScale = 1;
+            document.getElementById('mapSvg').style.transform = 'scale(1)';
+        }
+
+        // Infos utilisateur
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.nom) {
+            const initials = user.nom.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = user.nom;
+        }
+
+        loadCarteData();
+    </script>
 </body>
 
 </html>

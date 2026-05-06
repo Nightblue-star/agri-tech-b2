@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriTech – Observations terrain de vos cultures.">
     <title>AgriTech – Observations</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,16 +12,24 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-brand"><div class="logo-icon">🌿</div><span class="logo-text">Agri<span>Tech</span></span></div>
+        <div class="nav-brand">
+            <div class="logo-icon">🌿</div>
+            <span class="logo-text">Agri<span>Tech</span></span>
+        </div>
         <div class="nav-menu">
-            <a href="/" class="nav-link">Tableau de bord</a>
+            <a href="/home" class="nav-link">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
-            <a href="/observations" class="nav-link">Observations</a>
+            <a href="/observations" class="nav-link active">Observations</a>
             <a href="/alertes" class="nav-link">Alertes</a>
-            <a href="/meteo" class="nav-link active">Météo</a>
+            <a href="/meteo" class="nav-link">Météo</a>
             <a href="/carte" class="nav-link">Carte</a>
         </div>
-        <div class="topbar-right"><div class="user-card"><div class="user-avatar">CL</div><span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span></div></div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <div class="user-avatar" id="userAvatar">CL</div>
+                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
+            </div>
+        </div>
     </nav>
 
     <header class="hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?q=80&w=2000&auto=format&fit=crop');">
@@ -30,36 +39,180 @@
 
     <main class="main-content">
         <div class="dashboard-grid">
-            <!-- On a mis l'historique ici pour pouvoir suivre ce qu'on a fait sur le terrain -->
+
+            <!-- Liste des observations -->
             <div>
-                <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; margin-top: -30px;">Aujourd'hui — 6 mai 2025</div>
-                
-                <div class="card" style="padding: 24px; margin-bottom: 20px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                        <span class="badge" style="background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700;">🔍 Visite terrain</span>
-                        <span style="font-size: 12px; color: var(--text-muted);">09:32</span>
-                    </div>
-                    <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px;">P-01 · Les Hauts</div>
-                    <p style="font-size: 14px; line-height: 1.6;">Observation de taches sur le blé. Risque de rouille à surveiller de près cette semaine. Le sol semble encore très humide.</p>
+                <div style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:20px;
+                    text-transform:uppercase; margin-top:-30px;" id="obsDateLabel">
+                    Chargement…
+                </div>
+                <div id="observationsList">
+                    <p style="color:var(--text-muted);">Chargement des observations…</p>
                 </div>
             </div>
 
-            <!-- Formulaire pour rajouter des notes sans se prendre la tête -->
-            <div class="card" style="padding: 30px; align-self: start; margin-top: -30px;">
-                <h3 class="card-title" style="margin-bottom: 20px;">Nouvelle observation</h3>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <select style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit;">
-                        <option>Choisir une parcelle...</option>
-                        <option>P-01 · Les Hauts</option>
-                        <option>P-02 · La Plaine</option>
-                    </select>
-                    <textarea placeholder="Que remarquez-vous sur le terrain ?" style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-height: 120px; font-family: inherit; resize: vertical;"></textarea>
-                    <button class="btn-primary" style="justify-content: center; width: 100%;">Enregistrer la note</button>
+            <!-- Formulaire nouvelle observation -->
+            <div class="card" style="padding:30px; align-self:start; margin-top:-30px;">
+                <h3 class="card-title" style="margin-bottom:20px;">Nouvelle observation</h3>
+                <div style="display:flex; flex-direction:column; gap:15px;">
+
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">Parcelle</label>
+                        <select id="obsParcelleId"
+                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:14px;">
+                            <option value="">Choisir une parcelle…</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">État observé</label>
+                        <select id="obsEtat"
+                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:14px;">
+                            <option value="">Sélectionner un état…</option>
+                            <option value="OK">✅ OK</option>
+                            <option value="Stress hydrique">💧 Stress hydrique</option>
+                            <option value="Risque maladie">⚠️ Risque maladie</option>
+                            <option value="Maladie détectée">🔴 Maladie détectée</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">Commentaire</label>
+                        <textarea id="obsCommentaire" placeholder="Que remarquez-vous sur le terrain ?"
+                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+                            min-height:120px; font-family:inherit; font-size:14px; resize:vertical; box-sizing:border-box;"></textarea>
+                    </div>
+
+                    <div id="obsMsg" style="font-size:13px; font-weight:600; padding:10px; border-radius:8px; display:none;"></div>
+
+                    <button class="btn-primary" onclick="enregistrerObservation()"
+                        style="justify-content:center; width:100%; padding:13px; border:none; cursor:pointer;">
+                        Enregistrer la note
+                    </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        const ETAT_CONFIG = {
+            'OK':                { bg:'#d1fae5', color:'#065f46', icon:'✅' },
+            'Stress hydrique':   { bg:'#e0f2fe', color:'#0369a1', icon:'💧' },
+            'Risque maladie':    { bg:'#fef3c7', color:'#92400e', icon:'⚠️' },
+            'Maladie détectée':  { bg:'#fee2e2', color:'#991b1b', icon:'🔴' },
+        };
+
+        // Charge la liste des parcelles dans le select du formulaire
+        async function loadParcellesSelect() {
+            try {
+                const res = await fetch('/api/parcelles');
+                const parcelles = await res.json();
+                const sel = document.getElementById('obsParcelleId');
+                parcelles.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = p.nom + (p.culture ? ' · ' + p.culture : '');
+                    sel.appendChild(opt);
+                });
+            } catch(e) { console.error('Erreur chargement parcelles:', e); }
+        }
+
+        // Charge et affiche les observations
+        async function loadObservations() {
+            try {
+                const res = await fetch('/api/observations');
+                const data = await res.json();
+
+                const container = document.getElementById('observationsList');
+                const label = document.getElementById('obsDateLabel');
+
+                if (data.length === 0) {
+                    label.textContent = 'Aucune observation enregistrée';
+                    container.innerHTML = '<p style="color:var(--text-muted);">Pas encore d\'observations. Utilisez le formulaire →</p>';
+                    return;
+                }
+
+                label.textContent = data.length + ' observation(s) enregistrée(s)';
+                container.innerHTML = data.map(obs => {
+                    const cfg = ETAT_CONFIG[obs.etat] || { bg:'#f1f5f9', color:'#64748b', icon:'📋' };
+                    return `
+                    <div class="card" style="padding:20px; margin-bottom:16px; border-left:4px solid ${cfg.color};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <span style="background:${cfg.bg}; color:${cfg.color}; padding:4px 12px;
+                                border-radius:20px; font-size:11px; font-weight:700;">
+                                ${cfg.icon} ${obs.etat}
+                            </span>
+                            <span style="font-size:12px; color:var(--text-muted);">${obs.date}</span>
+                        </div>
+                        <div style="font-weight:700; font-size:15px; margin-bottom:6px;">
+                            ${obs.parcelle_nom || 'Parcelle #' + obs.parcelle_id}
+                        </div>
+                        <p style="font-size:14px; line-height:1.6; color:var(--text-muted); margin:0;">
+                            ${obs.commentaire || '<em>Aucun commentaire</em>'}
+                        </p>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                document.getElementById('observationsList').innerHTML =
+                    '<p style="color:#ef4444;">⚠️ Impossible de contacter le serveur.</p>';
+            }
+        }
+
+        async function enregistrerObservation() {
+            const parcelle_id = document.getElementById('obsParcelleId').value;
+            const etat = document.getElementById('obsEtat').value;
+            const commentaire = document.getElementById('obsCommentaire').value.trim();
+            const msg = document.getElementById('obsMsg');
+
+            if (!parcelle_id || !etat) {
+                msg.style.display = 'block';
+                msg.style.background = '#fee2e2';
+                msg.style.color = '#991b1b';
+                msg.textContent = '⚠️ Veuillez choisir une parcelle et un état.';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/observations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ parcelle_id: parseInt(parcelle_id), etat, commentaire })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    msg.style.display = 'block';
+                    msg.style.background = '#d1fae5';
+                    msg.style.color = '#065f46';
+                    msg.textContent = '✅ Observation enregistrée !';
+                    document.getElementById('obsParcelleId').value = '';
+                    document.getElementById('obsEtat').value = '';
+                    document.getElementById('obsCommentaire').value = '';
+                    setTimeout(() => { msg.style.display = 'none'; loadObservations(); }, 1000);
+                } else {
+                    msg.style.display = 'block';
+                    msg.style.background = '#fee2e2';
+                    msg.style.color = '#991b1b';
+                    msg.textContent = '❌ ' + (data.erreur || 'Erreur serveur');
+                }
+            } catch(e) {
+                msg.style.display = 'block';
+                msg.style.background = '#fee2e2';
+                msg.style.color = '#991b1b';
+                msg.textContent = '⚠️ Serveur inaccessible.';
+            }
+        }
+
+        // Infos utilisateur
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.nom) {
+            const initials = user.nom.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = user.nom;
+        }
+
+        loadParcellesSelect();
+        loadObservations();
+    </script>
 </body>
 </html>
