@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import *
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -10,16 +11,14 @@ utilisateurs = [
     {"email": "test@agritech.fr", "password": "password123", "nom": "Jean Cultivateur"}
 ]
 
-# On a mis ce point d'entrée pour vérifier que le serveur tourne bien dès le lancement.
 @app.route('/')
-def accueil():
-    return jsonify({"message": "Bienvenue sur l'API Agri-Tech du projet d'etudes"})
+def index():
+    return render_template('connexion.html')
 
 
 @app.route('/api/parcelles', methods=['GET', 'POST'])
 def gerer_parcelles():
     if request.method == 'POST':
-        # On récupère le JSON envoyé par le front. S'il n'y a rien, on crée un dictionnaire vide pour éviter les erreurs.
         data = request.json or {}
         if not data.get('id') or not data.get('nom') or not data.get('culture'):
             return jsonify({"erreur": "Les champs 'id', 'nom' et 'culture' sont obligatoires"}), 400
@@ -97,12 +96,10 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    # On utilise next() pour s'arrêter dès qu'on a trouvé l'utilisateur. 
-    # C'est plus efficace que de parcourir toute la liste.
+    # On cherche l'utilisateur dans notre liste
     user = next((u for u in utilisateurs if u['email'] == email and u['password'] == password), None)
 
     if user:
-        # On renvoie juste les infos de base pour le prototype.
         return jsonify({
             "status": "success",
             "message": "Connexion réussie",
