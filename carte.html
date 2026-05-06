@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriTech – Carte</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* On a dû faire quelques réglages pour que la carte prenne bien tout l'écran */
+        .map-container {
+            height: calc(100vh - 80px);
+            /* On retire la hauteur de la barre du haut pour pas avoir de scroll bizarre */
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-sidebar-alt {
+            width: 320px;
+            background: white;
+            border-right: 1px solid var(--border);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-view-alt {
+            flex: 1;
+            background: #cbd5e1;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body style="overflow: hidden;">
+    <!-- On bloque le scroll ici pour que ce soit plus simple de bouger la carte à la souris -->
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon">🗺️</div><span class="logo-text">Agri<span>Tech</span></span>
+        </div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Tableau de bord</a>
+            <a href="parcelles.html" class="nav-link">Parcelles</a>
+            <a href="observations.html" class="nav-link">Observations</a>
+            <a href="alertes.html" class="nav-link">Alertes</a>
+            <a href="meteo.html" class="nav-link">Météo</a>
+            <a href="carte.html" class="nav-link active">Carte</a>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <div class="user-avatar">CL</div><span
+                    style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="map-container">
+        <!-- Un petit panneau pour choisir la parcelle à regarder -->
+        <aside class="map-sidebar-alt">
+            <div style="padding: 24px; border-bottom: 1px solid var(--border);">
+                <h3 class="card-title">Exploration</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Sélectionnez une zone sur la
+                    carte</p>
+            </div>
+            <div style="padding: 20px; overflow-y: auto; flex: 1;">
+                <div class="stat-card"
+                    style="padding: 15px; margin-bottom: 10px; cursor: pointer; border-left: 4px solid var(--danger);"
+                    onclick="selectParcelleMap('P01')">
+                    <div style="font-weight: 700; font-size: 14px;">P-01 · Les Hauts</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Blé · 24.5 ha</div>
+                </div>
+                <div class="stat-card"
+                    style="padding: 15px; margin-bottom: 10px; cursor: pointer; border-left: 4px solid var(--secondary);"
+                    onclick="selectParcelleMap('P02')">
+                    <div style="font-weight: 700; font-size: 14px;">P-02 · La Plaine</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Maïs · 32.0 ha</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Ici c'est le SVG qui nous sert de carte interactive -->
+        <main class="map-view-alt">
+            <svg id="mapSvg" width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+                <rect width="800" height="600" fill="#cbd5e1" />
+
+                <!-- On a dessiné les parcelles à la main pour pouvoir cliquer dessus -->
+                <polygon id="P01" points="100,100 250,80 280,200 120,220" fill="#ef4444" fill-opacity="0.6"
+                    stroke="#b91c1c" stroke-width="1" class="parcelle-poly" data-name="P-01 · Les Hauts"
+                    data-culture="Blé" data-ha="24.5" onclick="selectParcelleMap('P01')" style="cursor: pointer;" />
+
+                <polygon id="P02" points="350,150 500,130 530,250 380,270" fill="#10b981" fill-opacity="0.6"
+                    stroke="#047857" stroke-width="1" class="parcelle-poly" data-name="P-02 · La Plaine"
+                    data-culture="Maïs" data-ha="32.0" onclick="selectParcelleMap('P02')" style="cursor: pointer;" />
+            </svg>
+
+            <!-- Les boutons de zoom parce que c'est plus pratique -->
+            <div
+                style="position: absolute; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-primary"
+                    style="width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 20px;"
+                    onclick="zoom(1.2)">+</button>
+                <button class="btn-primary"
+                    style="width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 20px;"
+                    onclick="zoom(0.8)">-</button>
+            </div>
+
+            <!-- C'est ici qu'on affiche les infos quand on passe la souris sur un champ -->
+            <div id="tooltip" class="card"
+                style="position: absolute; top: 30px; left: 30px; padding: 20px; display: none; pointer-events: none; min-width: 200px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div id="tt-title"
+                    style="font-weight: 800; font-size: 16px; margin-bottom: 5px; color: var(--primary-dark);">Nom de la
+                    parcelle</div>
+                <div style="font-size: 13px; color: var(--text-main);"><span id="tt-culture">...</span></div>
+                <div style="font-size: 13px; color: var(--text-muted);"><span id="tt-ha">...</span></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

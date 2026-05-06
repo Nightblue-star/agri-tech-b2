@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriTech – Alertes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><div class="logo-icon">🔔</div><span class="logo-text">Agri<span>Tech</span></span></div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Tableau de bord</a>
+            <!-- On a regroupé les alertes ici pour voir tout de suite s'il y a un problème urgent -->
+            <a href="parcelles.html" class="nav-link">Parcelles</a>
+            <a href="observations.html" class="nav-link">Observations</a>
+            <a href="alertes.html" class="nav-link active">Alertes</a>
+            <a href="meteo.html" class="nav-link">Météo</a>
+            <a href="carte.html" class="nav-link">Carte</a>
+        </div>
+        <div class="topbar-right"><div class="user-card"><div class="user-avatar">CL</div><span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span></div></div>
+    </nav>
+    <header class="hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=2000&auto=format&fit=crop');">
+        <p>Sécurité de vos cultures,</p>
+        <h1>Alertes en Cours</h1>
+    </header>
+    <main class="main-content">
+        <div style="display: flex; gap: 10px; margin-bottom: 32px; margin-top: -40px;">
+            <button class="nav-link active" onclick="filterAlerts('all', this)">Toutes</button>
+            <button class="stat-card" style="padding: 10px 20px; font-size: 14px; cursor: pointer;" onclick="filterAlerts('critical', this)">🚨 Critiques</button>
+        </div>
+        <div class="card alert-card" data-level="critical" style="padding: 24px; border-left: 5px solid var(--danger); margin-bottom: 20px;">
+            <!-- Affichage des risques phytosanitaires -->
+            <h3 class="card-title">Risque de mildiou élevé</h3>
+            <p style="margin-top: 10px; font-size: 14px; color: var(--text-muted);">P-01 · Les Hauts : Humidité élevée et température douce. Intervention recommandée.</p>
+        </div>
+    </main>
+    <script src="js/main.js"></script>
+</body>
+</html>
