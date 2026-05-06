@@ -13,8 +13,27 @@ utilisateurs = [
 
 @app.route('/')
 def index():
-    return render_template('connexion.html')
+    return render_template('index.html')
 
+@app.route('/parcelles')
+def parcelles():
+    return render_template('parcelles.html')
+
+@app.route('/observations')
+def observations():
+    return render_template('observations.html')
+
+@app.route('/carte')
+def carte():
+    return render_template('carte.html')
+
+@app.route('/meteo')
+def meteo():
+    return render_template('meteo.html')
+
+@app.route('/alertes')
+def alertes():
+    return render_template('alertes.html')
 
 @app.route('/api/parcelles', methods=['GET', 'POST'])
 def gerer_parcelles():
