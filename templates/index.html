@@ -17,7 +17,6 @@
 
 <body>
 
-    <!-- Nous avons mis les menus en haut pour laisser toute la place aux cartes et aux graphiques -->
     <nav class="navbar">
         <div class="nav-brand">
             <div class="logo-icon">
@@ -41,62 +40,56 @@
 
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar">CL</div>
+                <div class="user-avatar" id="userAvatar">CL</div>
                 <div class="flex-column">
-                    <span class="font-size-12 weight-700 text-white">Clyfton</span>
-                    <span class="font-size-10 text-muted-70 text-white">Exploitant</span>
+                    <span class="font-size-12 weight-700 text-white" id="userName">Clyfton</span>
+                    <span class="font-size-10 text-muted-70 text-white" id="userRole">Exploitant</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- On a mis un Hero imposant ici pour que le site ait une allure pro dès le premier coup d'œil -->
     <header class="hero"
         style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');">
         <p>Bienvenue sur votre plateforme,</p>
         <h1>Tableau de Bord Agricole</h1>
-        <div class="font-size-14 text-muted-80" style="margin-top: 10px;">📅 Mardi 6 mai 2025 · 📍 Beauce, Loiret</div>
+        <div class="font-size-14 text-muted-80" style="margin-top: 10px;" id="dateLocation">📅 Chargement… · 📍 Beauce,
+            Loiret</div>
     </header>
 
     <main class="main-content">
 
-        <!-- On a mis les KPI ici pour avoir les chiffres clés (surface, alertes) sans scroller -->
         <div class="stats-grid">
             <div class="stat-card featured animate-fade-up delay-1">
                 <div class="stat-label text-primary-dark">Surface en exploitation</div>
-                <div class="stat-value text-primary-dark">284 <span class="font-size-20">ha</span>
-                </div>
+                <div class="stat-value text-primary-dark" id="kpi-surface">— <span class="font-size-20">ha</span></div>
                 <div class="flex-between" style="margin-top: 10px;">
-                    <div class="font-size-13 text-primary-dark weight-700 text-muted-80">+4.2%
-                        cette année</div>
+                    <div class="font-size-13 text-primary-dark weight-700 text-muted-80">Total des parcelles</div>
                     <div class="stat-icon-wrapper icon-gold">🌾</div>
                 </div>
             </div>
             <div class="stat-card animate-fade-up delay-2">
                 <div class="stat-label">Parcelles actives</div>
-                <div class="stat-value">12</div>
+                <div class="stat-value" id="kpi-parcelles">—</div>
                 <div class="stat-icon-wrapper icon-purple">🚜</div>
             </div>
             <div class="stat-card animate-fade-up delay-3 border-danger-bottom">
                 <div class="stat-label">Alertes critiques</div>
-                <div class="stat-value text-danger">03</div>
+                <div class="stat-value text-danger" id="kpi-alertes">—</div>
                 <div class="stat-icon-wrapper icon-pink">🔔</div>
             </div>
             <div class="stat-card animate-fade-up delay-4">
-                <div class="stat-label">Pluviométrie (7j)</div>
-                <div class="stat-value">38 <span class="font-size-16">mm</span></div>
-                <div class="stat-icon-wrapper icon-blue">💧</div>
+                <div class="stat-label">Observations terrain</div>
+                <div class="stat-value" id="kpi-observations">—</div>
+                <div class="stat-icon-wrapper icon-blue">📋</div>
             </div>
         </div>
 
         <div class="dashboard-grid">
-            <!-- Section pour surveiller la santé des champs -->
             <div class="card animate-fade-up delay-5 p-0">
                 <div class="p-header flex-between">
-                    <h3 class="font-jakarta font-size-24 weight-800">Santé de vos
-                        cultures</h3>
-                    <a href="/parcelles" class="btn-secondary">Gérer
-                        les parcelles →</a>
+                    <h3 class="font-jakarta font-size-24 weight-800">Santé de vos cultures</h3>
+                    <a href="/parcelles" class="btn-secondary">Gérer les parcelles →</a>
                 </div>
 
                 <div class="img-banner m-x-40"
@@ -104,13 +97,11 @@
                 </div>
 
                 <div class="crop-health-list">
-                    <!-- Parcelle 1 -->
                     <div class="crop-item">
                         <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=200&auto=format&fit=crop"
                             class="crop-thumb" alt="Blé">
                         <div>
-                            <div class="weight-800 font-jakarta font-size-16">P-01 · Les
-                                Hauts</div>
+                            <div class="weight-800 font-jakarta font-size-16">P-01 · Les Hauts</div>
                             <div class="font-size-12 text-muted">Blé tendre d'hiver</div>
                         </div>
                         <div class="weight-700">24.5 ha</div>
@@ -126,13 +117,11 @@
                         </div>
                     </div>
 
-                    <!-- Parcelle 2 -->
                     <div class="crop-item">
                         <img src="https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=200&auto=format&fit=crop"
                             class="crop-thumb" alt="Maïs">
                         <div>
-                            <div class="weight-800 font-jakarta font-size-16">P-02 · La
-                                Plaine</div>
+                            <div class="weight-800 font-jakarta font-size-16">P-02 · La Plaine</div>
                             <div class="font-size-12 text-muted">Maïs grain</div>
                         </div>
                         <div class="weight-700">32.0 ha</div>
@@ -149,27 +138,139 @@
                 </div>
             </div>
 
-            <!-- Ici on a mis la météo et la pluie pour avoir un œil sur le ciel -->
             <div class="flex-column gap-40">
                 <div class="weather-card-full animate-fade-up delay-5"
                     style="background-image: linear-gradient(135deg, #0d9488, #10b981), url('https://images.unsplash.com/photo-1534067783941-51c9c23ceff3?q=80&w=800&auto=format&fit=crop');">
                     <div class="font-size-14 text-muted-80 m-b-10">Météo actuelle</div>
-                    <div class="text-64 weight-800 font-jakarta m-b-10">18°C</div>
-                    <div class="glass-pill">☀️ Ensoleillé · Vent 14 km/h</div>
+                    <div class="text-64 weight-800 font-jakarta m-b-10" id="meteo-temp">—°C</div>
+                    <div class="glass-pill" id="meteo-info">⏳ Chargement…</div>
                 </div>
 
                 <div class="card animate-fade-up" style="animation-delay: 0.6s;">
-                    <h3 class="font-jakarta font-size-20 m-b-25">Pluviométrie</h3>
-                    <div id="chart" class="chart-container">
-                    </div>
-                    <div id="chart-labels" class="chart-labels">
-                    </div>
+                    <h3 class="font-jakarta font-size-20 m-b-25">Pluviométrie (7 jours)</h3>
+                    <div id="chart" class="chart-container"></div>
+                    <div id="chart-labels" class="chart-labels"></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Alertes récentes depuis l'API -->
+        <div class="card animate-fade-up" style="margin-top: 32px; padding: 30px;">
+            <div class="flex-between" style="margin-bottom: 20px;">
+                <h3 class="font-jakarta font-size-20">Alertes récentes</h3>
+                <a href="/alertes" class="btn-secondary">Voir toutes →</a>
+            </div>
+            <div id="alertes-list">
+                <p style="color: var(--text-muted); font-size: 14px;">Chargement des alertes…</p>
             </div>
         </div>
     </main>
 
-    <script src="../js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Mise à jour de la date et heure
+        const now = new Date();
+        document.getElementById('dateLocation').textContent =
+            '📅 ' + now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) +
+            ' · 📍 Beauce, Loiret';
+
+        // Récupère les données du dashboard depuis l'API Flask
+        async function loadDashboard() {
+            try {
+                const res = await fetch('/api/dashboard');
+                const data = await res.json();
+                const ind = data.indicateurs;
+
+                document.getElementById('kpi-surface').innerHTML =
+                    (ind.surface_totale || '—') + ' <span class="font-size-20">ha</span>';
+                document.getElementById('kpi-parcelles').textContent = ind.nombre_parcelles ?? '—';
+                document.getElementById('kpi-alertes').textContent = ind.nombre_alertes ?? '—';
+                document.getElementById('kpi-observations').textContent = ind.nombre_observations ?? '—';
+
+                // Météo
+                const m = data.meteo_actuelle;
+                if (m && m.temperature !== undefined) {
+                    document.getElementById('meteo-temp').textContent = m.temperature + '°C';
+                    document.getElementById('meteo-info').textContent =
+                        '💧 Humidité : ' + m.humidite + '% · 🌧️ Pluie : ' + m.pluie_mm + ' mm';
+                }
+
+                // Alertes récentes
+                const alertesList = document.getElementById('alertes-list');
+                if (data.alertes_recentes && data.alertes_recentes.length > 0) {
+                    alertesList.innerHTML = data.alertes_recentes.map(a => {
+                        const niveauLabel = a.niveau === 3 ? '🔴 Critique' : a.niveau === 2 ? '🟠 Modérée' : '🟡 Faible';
+                        const niveauColor = a.niveau === 3 ? '#fee2e2' : a.niveau === 2 ? '#fef3c7' : '#f0fdf4';
+                        const textColor = a.niveau === 3 ? '#991b1b' : a.niveau === 2 ? '#92400e' : '#166534';
+                        return `<div style="display:flex; justify-content:space-between; align-items:center;
+                                    padding: 14px 18px; border-radius: 10px; margin-bottom: 10px;
+                                    background: ${niveauColor}; border-left: 4px solid ${textColor};">
+                            <div>
+                                <span style="font-weight:700; color:${textColor};">${a.parcelle_nom || 'Parcelle #' + a.parcelle_id}</span>
+                                <span style="margin-left:10px; font-size:13px; color:var(--text-muted);">${a.type}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span style="font-size:11px; color:var(--text-muted);">${a.date}</span>
+                                <span style="font-size:11px; font-weight:700; color:${textColor}; background:white; padding:3px 10px; border-radius:20px;">${niveauLabel}</span>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    alertesList.innerHTML = '<p style="color:var(--text-muted); font-size:14px;">✅ Aucune alerte critique en cours.</p>';
+                }
+
+            } catch (err) {
+                console.error('Erreur dashboard:', err);
+            }
+        }
+
+        // Charge le graphique pluviométrie depuis l'API météo
+        async function loadMeteoChart() {
+            try {
+                const res = await fetch('/api/meteo');
+                const data = await res.json();
+                const reversed = data.reverse();
+                const days = reversed.map(d => d.date.slice(5));
+                const rain = reversed.map(d => d.pluie_mm);
+                const temp = reversed.map(d => d.temperature);
+
+                const chartEl = document.getElementById('chart');
+                const labelsEl = document.getElementById('chart-labels');
+                if (!chartEl) return;
+
+                const maxRain = Math.max(...rain) || 1;
+                const maxTemp = Math.max(...temp) || 1;
+
+                chartEl.innerHTML = days.map((day, i) => `
+                    <div style="flex:1; display:flex; align-items:flex-end; justify-content:center; gap:4px;" title="${day}: ${rain[i]}mm, ${temp[i]}°C">
+                        <div style="height:${(rain[i] / maxRain) * 140}px; background:linear-gradient(to top,#3b82f6,#60a5fa); width:10px; border-radius:5px;" title="${rain[i]}mm"></div>
+                        <div style="height:${(temp[i] / maxTemp) * 140}px; background:linear-gradient(to top,#f59e0b,#fbbf24); width:10px; border-radius:5px;" title="${temp[i]}°C"></div>
+                    </div>`).join('');
+
+                if (labelsEl) {
+                    labelsEl.innerHTML = days.map(d => `<span style="flex:1;text-align:center;font-size:11px;font-weight:700;color:#94a3b8;">${d}</span>`).join('');
+                }
+            } catch (err) {
+                console.error('Erreur météo chart:', err);
+                initDashboardChart(); // fallback données en dur
+            }
+        }
+
+        // Chargement au démarrage
+        loadDashboard();
+        loadMeteoChart();
+
+        // Récupère infos utilisateur depuis localStorage si connecté
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user) {
+            if (user.nom) {
+                const initials = user.nom.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('userName').textContent = user.nom;
+            }
+            if (user.role) document.getElementById('userRole').textContent = user.role;
+        }
+    </script>
 </body>
 
 </html>

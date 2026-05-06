@@ -4,54 +4,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriTech – Alertes et risques sur vos parcelles.">
     <title>AgriTech – Alertes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
     <nav class="navbar">
         <div class="nav-brand">
-            <div class="logo-icon">🔔</div><span class="logo-text">Agri<span>Tech</span></span>
+            <div class="logo-icon">🔔</div>
+            <span class="logo-text">Agri<span>Tech</span></span>
         </div>
         <div class="nav-menu">
             <a href="/" class="nav-link">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
             <a href="/observations" class="nav-link">Observations</a>
-            <a href="/alertes" class="nav-link">Alertes</a>
-            <a href="/meteo" class="nav-link active">Météo</a>
+            <a href="/alertes" class="nav-link active">Alertes</a>
+            <a href="/meteo" class="nav-link">Météo</a>
             <a href="/carte" class="nav-link">Carte</a>
         </div>
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar">CL</div><span
-                    style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span>
+                <div class="user-avatar" id="userAvatar">CL</div>
+                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
+
     <header class="hero"
         style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=2000&auto=format&fit=crop');">
         <p>Sécurité de vos cultures,</p>
         <h1>Alertes en Cours</h1>
     </header>
+
     <main class="main-content">
-        <div style="display: flex; gap: 10px; margin-bottom: 32px; margin-top: -40px;">
-            <button class="nav-link active" onclick="filterAlerts('all', this)">Toutes</button>
-            <button class="stat-card" style="padding: 10px 20px; font-size: 14px; cursor: pointer;"
-                onclick="filterAlerts('critical', this)">🚨 Critiques</button>
+
+        <!-- Compteurs rapides -->
+        <div class="stats-grid" style="margin-top:-40px; margin-bottom:32px;">
+            <div class="stat-card animate-fade-up delay-1">
+                <div class="stat-label">Total alertes</div>
+                <div class="stat-value" id="count-total">—</div>
+                <div class="stat-icon-wrapper icon-purple">🔔</div>
+            </div>
+            <div class="stat-card animate-fade-up delay-2 border-danger-bottom">
+                <div class="stat-label">Niveau Critique (3)</div>
+                <div class="stat-value text-danger" id="count-3">—</div>
+                <div class="stat-icon-wrapper icon-pink">🚨</div>
+            </div>
+            <div class="stat-card animate-fade-up delay-3">
+                <div class="stat-label">Niveau Modéré (2)</div>
+                <div class="stat-value" style="color:#d97706;" id="count-2">—</div>
+                <div class="stat-icon-wrapper icon-gold">⚠️</div>
+            </div>
+            <div class="stat-card animate-fade-up delay-4">
+                <div class="stat-label">Niveau Faible (1)</div>
+                <div class="stat-value" style="color:#16a34a;" id="count-1">—</div>
+                <div class="stat-icon-wrapper icon-blue">ℹ️</div>
+            </div>
         </div>
-        <div class="card alert-card" data-level="critical"
-            style="padding: 24px; border-left: 5px solid var(--danger); margin-bottom: 20px;">
-            <!-- Affichage des risques  -->
-            <h3 class="card-title">Risque de mildiou élevé</h3>
-            <p style="margin-top: 10px; font-size: 14px; color: var(--text-muted);">P-01 · Les Hauts : Humidité élevée
-                et température douce. Intervention recommandée.</p>
+
+        <!-- Filtres -->
+        <div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+            <button class="filter-tab nav-link active" id="tab-all"
+                onclick="setFilter('all', this)">Toutes</button>
+            <button class="filter-tab stat-card" style="padding:10px 20px; font-size:14px; cursor:pointer; border:none;"
+                id="tab-3" onclick="setFilter(3, this)">🚨 Critiques</button>
+            <button class="filter-tab stat-card" style="padding:10px 20px; font-size:14px; cursor:pointer; border:none;"
+                id="tab-2" onclick="setFilter(2, this)">⚠️ Modérées</button>
+            <button class="filter-tab stat-card" style="padding:10px 20px; font-size:14px; cursor:pointer; border:none;"
+                id="tab-1" onclick="setFilter(1, this)">ℹ️ Faibles</button>
+        </div>
+
+        <!-- Liste des alertes -->
+        <div id="alertesList">
+            <p style="color:var(--text-muted);">Chargement des alertes…</p>
         </div>
     </main>
-    <script src="js/main.js"></script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        const NIVEAU_CONFIG = {
+            3: { label:'Critique',  bg:'#fee2e2', color:'#991b1b', border:'var(--danger)', icon:'🚨' },
+            2: { label:'Modérée',   bg:'#fef3c7', color:'#92400e', border:'#f59e0b',       icon:'⚠️' },
+            1: { label:'Faible',    bg:'#f0fdf4', color:'#166534', border:'#22c55e',       icon:'ℹ️' },
+        };
+
+        let toutesLesAlertes = [];
+        let filtreActif = 'all';
+
+        async function loadAlertes() {
+            try {
+                const res = await fetch('/api/alertes');
+                toutesLesAlertes = await res.json();
+                updateCounters();
+                renderAlertes();
+            } catch(e) {
+                document.getElementById('alertesList').innerHTML =
+                    '<p style="color:#ef4444;">⚠️ Impossible de contacter le serveur. Lancez app.py.</p>';
+            }
+        }
+
+        function updateCounters() {
+            document.getElementById('count-total').textContent = toutesLesAlertes.length;
+            [1,2,3].forEach(n => {
+                document.getElementById('count-' + n).textContent =
+                    toutesLesAlertes.filter(a => a.niveau === n).length;
+            });
+        }
+
+        function setFilter(niveau, btn) {
+            filtreActif = niveau;
+            document.querySelectorAll('.filter-tab').forEach(t => {
+                t.classList.remove('active');
+                t.style.fontWeight = '';
+            });
+            btn.classList.add('active');
+            renderAlertes();
+        }
+
+        function renderAlertes() {
+            const liste = filtreActif === 'all'
+                ? toutesLesAlertes
+                : toutesLesAlertes.filter(a => a.niveau === filtreActif);
+
+            const container = document.getElementById('alertesList');
+            if (liste.length === 0) {
+                container.innerHTML = '<div class="card" style="padding:30px; text-align:center; color:var(--text-muted);">✅ Aucune alerte pour ce filtre.</div>';
+                return;
+            }
+
+            container.innerHTML = liste.map(a => {
+                const cfg = NIVEAU_CONFIG[a.niveau] || NIVEAU_CONFIG[1];
+                return `
+                <div class="card alert-card" data-level="${a.niveau}"
+                    style="padding:24px; border-left:5px solid ${cfg.border}; margin-bottom:16px;
+                    background:white; transition:transform 0.15s;"
+                    onmouseover="this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.transform=''">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:17px; font-weight:800;
+                                color:var(--text-main); margin:0 0 6px;">
+                                ${cfg.icon} ${a.type}
+                            </h3>
+                            <div style="font-size:14px; color:var(--text-muted);">
+                                📍 ${a.parcelle_nom || 'Parcelle #' + a.parcelle_id}
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                            <span style="background:${cfg.bg}; color:${cfg.color}; font-size:11px; font-weight:700;
+                                padding:4px 12px; border-radius:20px;">
+                                ${cfg.icon} ${cfg.label}
+                            </span>
+                            <span style="font-size:12px; color:var(--text-muted);">📅 ${a.date}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // Infos utilisateur
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.nom) {
+            const initials = user.nom.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = user.nom;
+        }
+
+        loadAlertes();
+    </script>
 </body>
 
 </html>
