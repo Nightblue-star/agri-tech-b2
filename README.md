@@ -2,7 +2,7 @@
 
 Bienvenue sur **AgriTech**, une solution numérique de pointe conçue pour transformer la gestion quotidienne des exploitations agricoles. Ce projet a été développé avec une vision claire : offrir aux exploitants un véritable "Centre de Commande" professionnel, esthétique et performant.
 
-## 🎯 Pourquoi ce projet ?
+## 🎯 Objectif du projet ?
 
 Le secteur agricole fait face à des défis croissants (climat, maladies, optimisation des ressources). Ce projet a été créé pour :
 - **Centraliser les données** : Regrouper en un seul lieu la météo, l'état des parcelles et les observations terrain.
