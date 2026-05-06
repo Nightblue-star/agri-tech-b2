@@ -9,44 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style="display:flex; align-items:center; justify-content:center; min-height:100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);">
+<body class="login-body">
 
-<div class="login-card" style="background:white; border-radius:20px; padding:48px 40px;
-    width:100%; max-width:420px; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
-    <div style="text-align:center; margin-bottom:32px;">
-        <div style="width:56px; height:56px; background:var(--primary); border-radius:16px;
-            display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:28px;">🌾</div>
-        <h1 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:26px; font-weight:800; color:var(--text-main);">AgriTech</h1>
-        <p style="color:var(--text-muted); font-size:14px; margin-top:6px;">Accédez à votre portail agricole</p>
+<div class="login-card">
+    <div class="login-header">
+        <div class="login-logo">🌾</div>
+        <h1 class="login-title">AgriTech</h1>
+        <p class="login-subtitle">Accédez à votre portail agricole</p>
     </div>
 
-    <form id="loginForm" style="display:flex; flex-direction:column; gap:16px;">
-        <div>
-            <label style="font-size:13px; font-weight:600; color:var(--text-main); display:block; margin-bottom:6px;">Email</label>
-            <input type="email" id="email" placeholder="test@agritech.fr" required
-                style="width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
-                    font-size:14px; font-family:inherit; box-sizing:border-box; transition:border 0.2s;"
-                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+    <form id="loginForm" class="login-form">
+        <div class="form-field">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-input" placeholder="test@agritech.fr" required>
         </div>
-        <div>
-            <label style="font-size:13px; font-weight:600; color:var(--text-main); display:block; margin-bottom:6px;">Mot de passe</label>
-            <input type="password" id="password" placeholder="password123" required
-                style="width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
-                    font-size:14px; font-family:inherit; box-sizing:border-box; transition:border 0.2s;"
-                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+        <div class="form-field">
+            <label class="form-label">Mot de passe</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" class="form-input" placeholder="password123" required>
+                <button type="button" class="password-toggle" id="togglePassword" title="Afficher / masquer le mot de passe">
+                    👁️
+                </button>
+            </div>
         </div>
 
-        <button type="submit" class="btn-primary" id="submitBtn"
-            style="width:100%; justify-content:center; padding:14px; font-size:15px; margin-top:8px; border:none; cursor:pointer;">
+        <button type="submit" class="btn-primary" id="submitBtn">
             Se connecter
         </button>
     </form>
 
-    <div id="message" style="margin-top:16px; padding:12px 16px; border-radius:10px; font-size:14px;
-        font-weight:600; display:none;"></div>
+    <div id="message" class="alert-message"></div>
 
-    <div style="margin-top:24px; padding:16px; background:#f8fafc; border-radius:12px; font-size:12px; color:var(--text-muted);">
+    <div class="login-help">
         <strong>Compte de test :</strong><br>
         Email : test@agritech.fr<br>
         Mot de passe : password123
@@ -57,6 +51,19 @@
     const loginForm = document.getElementById('loginForm');
     const messageDiv = document.getElementById('message');
     const submitBtn = document.getElementById('submitBtn');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    // Affiche / masque le mot de passe quand on clique sur l'œil
+    togglePassword.addEventListener('click', () => {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.textContent = '👁️';
+        }
+    });
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -64,7 +71,7 @@
         submitBtn.disabled = true;
 
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const password = passwordInput.value;
 
         try {
             const response = await fetch('/api/login', {
@@ -77,23 +84,17 @@
 
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(data.user));
-                messageDiv.style.display = 'block';
-                messageDiv.style.background = '#d1fae5';
-                messageDiv.style.color = '#065f46';
+                messageDiv.className = 'alert-message success';
                 messageDiv.textContent = '✅ Connexion réussie ! Redirection…';
                 setTimeout(() => { window.location.href = '/home'; }, 600);
             } else {
-                messageDiv.style.display = 'block';
-                messageDiv.style.background = '#fee2e2';
-                messageDiv.style.color = '#991b1b';
+                messageDiv.className = 'alert-message error';
                 messageDiv.textContent = '❌ ' + (data.erreur || 'Erreur de connexion');
                 submitBtn.textContent = 'Se connecter';
                 submitBtn.disabled = false;
             }
         } catch (error) {
-            messageDiv.style.display = 'block';
-            messageDiv.style.background = '#fee2e2';
-            messageDiv.style.color = '#991b1b';
+            messageDiv.className = 'alert-message error';
             messageDiv.textContent = '⚠️ Le serveur est inaccessible. Lancez app.py.';
             submitBtn.textContent = 'Se connecter';
             submitBtn.disabled = false;
