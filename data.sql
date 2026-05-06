@@ -247,3 +247,9 @@ INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-16', 'Str
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-22', 'Risque maladie', 5, 2);
 INSERT INTO alertes (date, type, parcelle_id, niveau) VALUES ('2026-03-14', 'Risque maladie', 10, 2);
 
+-- Ajouter l'id à meteo et lee mettre en clef primaire
+ALTER TABLE meteo
+DROP PRIMARY KEY,
+ADD COLUMN id_meteo INT AUTO_INCREMENT PRIMARY KEY;
+
+
