@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import *
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -11,8 +12,8 @@ utilisateurs = [
 ]
 
 @app.route('/')
-def accueil():
-    return jsonify({"message": "Bienvenue sur l'API Agri-Tech du projet d'etudes"})
+def index():
+    return render_template('connexion.html')
 
 
 @app.route('/api/parcelles', methods=['GET', 'POST'])
@@ -99,8 +100,6 @@ def login():
     user = next((u for u in utilisateurs if u['email'] == email and u['password'] == password), None)
 
     if user:
-        # En production, on enverrait un "Token" (JWT), mais pour le projet, 
-        # renvoyer les infos de l'utilisateur suffit pour le frontend.
         return jsonify({
             "status": "success",
             "message": "Connexion réussie",
