@@ -6,19 +6,18 @@
     <title>AgriTech – Alertes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-brand"><div class="logo-icon">🔔</div><span class="logo-text">Agri<span>Tech</span></span></div>
         <div class="nav-menu">
-            <a href="index.html" class="nav-link">Tableau de bord</a>
-            <!-- On a regroupé les alertes ici pour voir tout de suite s'il y a un problème urgent -->
-            <a href="parcelles.html" class="nav-link">Parcelles</a>
-            <a href="observations.html" class="nav-link">Observations</a>
-            <a href="alertes.html" class="nav-link active">Alertes</a>
-            <a href="meteo.html" class="nav-link">Météo</a>
-            <a href="carte.html" class="nav-link">Carte</a>
+            <a href="/" class="nav-link">Tableau de bord</a>
+            <a href="/parcelles" class="nav-link">Parcelles</a>
+            <a href="/observations" class="nav-link">Observations</a>
+            <a href="/alertes" class="nav-link">Alertes</a>
+            <a href="/meteo" class="nav-link active">Météo</a>
+            <a href="/carte" class="nav-link">Carte</a>
         </div>
         <div class="topbar-right"><div class="user-card"><div class="user-avatar">CL</div><span style="font-size: 12px; font-weight: 700; color: white;">Clyfton</span></div></div>
     </nav>
