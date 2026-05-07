@@ -178,10 +178,10 @@ def init_db():
     db.commit()
     db.close()
 
-# ─── Pages HTML ────────────────────────────────────────────────────────────────
+# ─── Routes pages HTML ──────────────────────────────────────────────────────────
 
 @app.route('/home')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/')
@@ -218,14 +218,23 @@ def api_parcelles():
         nom = data.get('nom', '').strip()
         localisation = data.get('localisation', '').strip()
         surface = data.get('surface_ha', 0)
+        culture = data.get('culture', '').strip()
         if not nom:
             return jsonify({"erreur": "Le champ 'nom' est obligatoire"}), 400
         cur = db.execute(
             "INSERT INTO parcelles (nom, localisation, surface_ha) VALUES (?,?,?)",
             (nom, localisation, surface)
         )
+        parcelle_id = cur.lastrowid
+        # Si une culture est précisée, on l'ajoute dans la table cultures
+        if culture:
+            import datetime
+            db.execute(
+                "INSERT INTO cultures (type, date_semis, parcelle_id) VALUES (?,?,?)",
+                (culture, datetime.date.today().isoformat(), parcelle_id)
+            )
         db.commit()
-        return jsonify({"message": "Parcelle ajoutée", "id": cur.lastrowid}), 201
+        return jsonify({"message": "Parcelle ajoutée", "id": parcelle_id}), 201
 
     rows = db.execute("""
         SELECT p.id, p.nom, p.localisation, p.surface_ha, c.type as culture
@@ -282,6 +291,13 @@ def api_observations():
         LIMIT 50
     """).fetchall()
     return jsonify([dict(r) for r in rows])
+
+@app.route('/api/observations/<int:oid>', methods=['DELETE'])
+def api_observation_delete(oid):
+    db = get_db()
+    db.execute("DELETE FROM observations WHERE id=?", (oid,))
+    db.commit()
+    return jsonify({"message": "Observation supprimée"})
 
 # ─── API Alertes ────────────────────────────────────────────────────────────────
 

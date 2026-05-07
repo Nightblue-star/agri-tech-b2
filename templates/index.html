@@ -42,8 +42,8 @@
             <div class="user-card">
                 <div class="user-avatar" id="userAvatar">CL</div>
                 <div class="flex-column">
-                    <span class="font-size-12 weight-700 text-white" id="userName">Clyfton</span>
-                    <span class="font-size-10 text-muted-70 text-white" id="userRole">Exploitant</span>
+                    <span class="user-name" id="userName">Clyfton</span>
+                    <span class="user-role" id="userRole">Exploitant</span>
                 </div>
             </div>
         </div>
@@ -53,8 +53,7 @@
         style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');">
         <p>Bienvenue sur votre plateforme,</p>
         <h1>Tableau de Bord Agricole</h1>
-        <div class="font-size-14 text-muted-80" style="margin-top: 10px;" id="dateLocation">📅 Chargement… · 📍 Beauce,
-            Loiret</div>
+        <div class="font-size-14 text-muted-80 hero-subtitle" id="dateLocation">📅 Chargement… · 📍 Beauce, Loiret</div>
     </header>
 
     <main class="main-content">
@@ -63,7 +62,7 @@
             <div class="stat-card featured animate-fade-up delay-1">
                 <div class="stat-label text-primary-dark">Surface en exploitation</div>
                 <div class="stat-value text-primary-dark" id="kpi-surface">— <span class="font-size-20">ha</span></div>
-                <div class="flex-between" style="margin-top: 10px;">
+                <div class="stat-card-footer">
                     <div class="font-size-13 text-primary-dark weight-700 text-muted-80">Total des parcelles</div>
                     <div class="stat-icon-wrapper icon-gold">🌾</div>
                 </div>
@@ -155,13 +154,13 @@
         </div>
 
         <!-- Alertes récentes depuis l'API -->
-        <div class="card animate-fade-up" style="margin-top: 32px; padding: 30px;">
-            <div class="flex-between" style="margin-bottom: 20px;">
+        <div class="card animate-fade-up card-recent-alerts">
+            <div class="flex-between card-recent-alerts-header">
                 <h3 class="font-jakarta font-size-20">Alertes récentes</h3>
                 <a href="/alertes" class="btn-secondary">Voir toutes →</a>
             </div>
             <div id="alertes-list">
-                <p style="color: var(--text-muted); font-size: 14px;">Chargement des alertes…</p>
+                <p class="text-muted font-size-14">Chargement des alertes…</p>
             </div>
         </div>
     </main>
@@ -216,7 +215,7 @@
                         </div>`;
                     }).join('');
                 } else {
-                    alertesList.innerHTML = '<p style="color:var(--text-muted); font-size:14px;">✅ Aucune alerte critique en cours.</p>';
+                    alertesList.innerHTML = '<p class="text-muted font-size-14">✅ Aucune alerte critique en cours.</p>';
                 }
 
             } catch (err) {
