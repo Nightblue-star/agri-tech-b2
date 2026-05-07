@@ -124,7 +124,3 @@ Projet réalisé par les étudiants de Bachelor 2 — Sup de Vinci :
 > L'historique des commits du dépôt Git reflète la répartition concrète du travail au sein de l'équipe.
 
 ---
-
-## 📄 Licence
-
-Projet réalisé dans un cadre pédagogique. Usage académique uniquement.
