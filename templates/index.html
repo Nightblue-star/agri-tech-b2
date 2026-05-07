@@ -19,6 +19,8 @@
 
     <nav class="navbar">
         <div class="nav-brand">
+            <button class="menu-toggle" id="openMenu">☰</button>
+
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
                     <path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z" fill="rgba(255,255,255,0.2)" />
@@ -29,7 +31,9 @@
             <span class="logo-text">Agri<span>Tech</span></span>
         </div>
 
-        <div class="nav-menu">
+        <div class="nav-menu" id="mobileMenu">
+            <button class="menu-close" id="closeMenu">✕</button>
+            
             <a href="/home" class="nav-link active">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
             <a href="/observations" class="nav-link">Observations</a>
@@ -40,10 +44,10 @@
 
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar" id="userAvatar">CL</div>
+                <div class="user-avatar" id="userAvatar">Admin</div>
                 <div class="flex-column">
-                    <span class="user-name" id="userName">Clyfton</span>
-                    <span class="user-role" id="userRole">Exploitant</span>
+                    <span class="user-name" id="userName">Admin</span>
+                    <span class="user-role" id="userRole">Administrateur</span>
                 </div>
             </div>
         </div>

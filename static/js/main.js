@@ -105,3 +105,36 @@ function selectParcelleMap(id) {
         tt.style.display = 'block';
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Dashboard prêt.");
+    initMobileMenu(); 
+    initDashboardChart();
+});
+
+function initMobileMenu() {
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const menu = document.getElementById('mobileMenu');
+
+    if (openBtn && menu) {
+        openBtn.addEventListener('click', () => {
+            menu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (closeBtn && menu) {
+        closeBtn.addEventListener('click', () => {
+            menu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+}
