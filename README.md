@@ -57,9 +57,17 @@ agri-tech-b2/
 └── README.md
 ```
 
+
+## 🚀 Déploiement et Installation
+
+### 🌐 Accès en ligne (Production)
+L'application est déployée et accessible directement à cette adresse :  
+👉 **[https://agri-tech-b2.vercel.app](https://agri-tech-b2.vercel.app)**
+
 ---
 
-### Étapes
+### 💻 Installation Locale (Développement)
+Si vous souhaitez lancer le projet sur votre machine :
 
 git clone https://github.com/Nightblue-star/agri-tech-b2.git
 cd agri-tech-b2
@@ -117,7 +125,7 @@ Une documentation détaillée est disponible et couvre :
 Projet réalisé par les étudiants de Bachelor 2 — Sup de Vinci :
 
 - **Adel** — Base de données (MCD, MLD, requêtes SQL)
-- **Amine** — Backend Python / Flask (`app.py`) & responsive design
+- **Amine** — Backend Python / Flask (`app.py`) & responsive design & hebergement vercel & aide au front end
 - **Clyfton** — Frontend (HTML, CSS, intégration des templates)
 - **Ayoub** — CSS & contributions HTML
 
