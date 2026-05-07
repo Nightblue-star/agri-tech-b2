@@ -41,6 +41,7 @@ agri-tech-b2/
 ├── agritech.db             # Base de données SQLite (générée au lancement)
 ├── data.sql                # Données d'initialisation
 ├── MLD.sql                 # Modèle Logique de Données
+├── requirements.txt        # Dépendances Python
 ├── static/
 │   ├── style.css           # Styles centralisés
 │   └── js/
@@ -52,42 +53,31 @@ agri-tech-b2/
 │   ├── observations.html   # Notes terrain
 │   ├── alertes.html        # Alertes & risques
 │   ├── meteo.html          # Météo & prévisions
-│   └── carte.html          # Carte
+│   └── carte.html          # Carte interactive
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation et lancement
-
-### Prérequis
-
-- Python 3.8 ou supérieur
-- pip
-
 ### Étapes
 
-```bash
-# 1. Se placer dans le dossier du projet
+git clone https://github.com/Nightblue-star/agri-tech-b2.git
 cd agri-tech-b2
 
-# 2. Créer un environnement virtuel (recommandé)
 python -m venv myenv
 
-# Activer l'environnement :
-# Sur Windows :
+Activer l'environnement virtuel
+Windows :
 myenv\Scripts\activate
-# Sur Mac/Linux :
+
+Mac/Linux :
 source myenv/bin/activate
 
-# 3. Installer les dépendances
-pip install flask flask-cors
+pip install -r requirements.txt
 
-# 4. Lancer l'application
 python app.py
-```
 
-L'application est accessible sur **http://127.0.0.1:5000**
+Ouvrez l'adresse suivante : http://127.0.0.1:5000/
 
 > La base de données SQLite et les données de test sont créées automatiquement au premier lancement.
 
@@ -100,13 +90,12 @@ Pour tester l'application sans créer de compte :
 | Email | Mot de passe | Rôle |
 |---|---|---|
 | `test@agritech.fr` | `password123` | Agriculteur |
-| `admin@ferme.com` | `admin123` | Admin |
 
 ---
 
 ## 🚧 État du déploiement
 
-Le projet est actuellement **fonctionnel en local**. Un déploiement sur infrastructure cloud (envisagé : Azure ou serveur Linux) est prévu dans la suite du projet, accompagné d'un schéma d'architecture détaillé.
+Le projet est actuellement **fonctionnel en local** 
 
 ---
 
@@ -120,8 +109,6 @@ Une documentation détaillée est disponible et couvre :
 - Les choix techniques justifiés
 - L'organisation de l'équipe
 - Les limites et perspectives d'évolution
-
-📄 **Lien vers la documentation : [À COMPLÉTER]**
 
 ---
 
