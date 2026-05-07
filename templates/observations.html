@@ -29,7 +29,7 @@
         <div class="topbar-right">
             <div class="user-card">
                 <div class="user-avatar" id="userAvatar">CL</div>
-                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
+                <span class="user-name" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
@@ -44,32 +44,29 @@
 
             <!-- Liste des observations -->
             <div>
-                <div style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:20px;
-                    text-transform:uppercase; margin-top:-30px;" id="obsDateLabel">
+                <div class="obs-date-label" id="obsDateLabel">
                     Chargement…
                 </div>
                 <div id="observationsList">
-                    <p style="color:var(--text-muted);">Chargement des observations…</p>
+                    <p class="text-muted">Chargement des observations…</p>
                 </div>
             </div>
 
             <!-- Formulaire nouvelle observation -->
-            <div class="card" style="padding:30px; align-self:start; margin-top:-30px;">
-                <h3 class="card-title" style="margin-bottom:20px;">Nouvelle observation</h3>
-                <div style="display:flex; flex-direction:column; gap:15px;">
+            <div class="card obs-form-card">
+                <h3 class="card-title">Nouvelle observation</h3>
+                <div class="obs-form-stack">
 
-                    <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">Parcelle</label>
-                        <select id="obsParcelleId"
-                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:14px;">
+                    <div class="form-field">
+                        <label class="form-label-uppercase">Parcelle</label>
+                        <select id="obsParcelleId" class="form-select form-input-sm">
                             <option value="">Choisir une parcelle…</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">État observé</label>
-                        <select id="obsEtat"
-                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:14px;">
+                    <div class="form-field">
+                        <label class="form-label-uppercase">État observé</label>
+                        <select id="obsEtat" class="form-select form-input-sm">
                             <option value="">Sélectionner un état…</option>
                             <option value="OK">✅ OK</option>
                             <option value="Stress hydrique">💧 Stress hydrique</option>
@@ -78,17 +75,14 @@
                         </select>
                     </div>
 
-                    <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase;">Commentaire</label>
-                        <textarea id="obsCommentaire" placeholder="Que remarquez-vous sur le terrain ?"
-                            style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
-                            min-height:120px; font-family:inherit; font-size:14px; resize:vertical; box-sizing:border-box;"></textarea>
+                    <div class="form-field">
+                        <label class="form-label-uppercase">Commentaire</label>
+                        <textarea id="obsCommentaire" class="form-textarea form-input-sm" placeholder="Que remarquez-vous sur le terrain ?"></textarea>
                     </div>
 
-                    <div id="obsMsg" style="font-size:13px; font-weight:600; padding:10px; border-radius:8px; display:none;"></div>
+                    <div id="obsMsg" class="form-msg"></div>
 
-                    <button class="btn-primary" onclick="enregistrerObservation()"
-                        style="justify-content:center; width:100%; padding:13px; border:none; cursor:pointer;">
+                    <button class="btn-primary" onclick="enregistrerObservation()">
                         Enregistrer la note
                     </button>
                 </div>
@@ -131,7 +125,7 @@
 
                 if (data.length === 0) {
                     label.textContent = 'Aucune observation enregistrée';
-                    container.innerHTML = '<p style="color:var(--text-muted);">Pas encore d\'observations. Utilisez le formulaire →</p>';
+                    container.innerHTML = '<p class="text-muted">Pas encore d\'observations. Utilisez le formulaire →</p>';
                     return;
                 }
 
@@ -139,18 +133,22 @@
                 container.innerHTML = data.map(obs => {
                     const cfg = ETAT_CONFIG[obs.etat] || { bg:'#f1f5f9', color:'#64748b', icon:'📋' };
                     return `
-                    <div class="card" style="padding:20px; margin-bottom:16px; border-left:4px solid ${cfg.color};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <span style="background:${cfg.bg}; color:${cfg.color}; padding:4px 12px;
-                                border-radius:20px; font-size:11px; font-weight:700;">
+                    <div class="card obs-card" style="border-left-color:${cfg.color};">
+                        <div class="obs-card-header">
+                            <span class="obs-pill" style="background:${cfg.bg}; color:${cfg.color};">
                                 ${cfg.icon} ${obs.etat}
                             </span>
-                            <span style="font-size:12px; color:var(--text-muted);">${obs.date}</span>
+                            <div class="obs-card-actions">
+                                <span class="obs-card-date">${obs.date}</span>
+                                <button class="btn-delete" onclick="supprimerObservation(${obs.id})" title="Supprimer cette observation">
+                                    🗑️
+                                </button>
+                            </div>
                         </div>
-                        <div style="font-weight:700; font-size:15px; margin-bottom:6px;">
+                        <div class="obs-card-title">
                             ${obs.parcelle_nom || 'Parcelle #' + obs.parcelle_id}
                         </div>
-                        <p style="font-size:14px; line-height:1.6; color:var(--text-muted); margin:0;">
+                        <p class="obs-card-comment">
                             ${obs.commentaire || '<em>Aucun commentaire</em>'}
                         </p>
                     </div>`;
@@ -161,6 +159,21 @@
             }
         }
 
+        // Supprime une observation après confirmation
+        async function supprimerObservation(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette observation ?')) return;
+            try {
+                const res = await fetch('/api/observations/' + id, { method: 'DELETE' });
+                if (res.ok) {
+                    loadObservations();
+                } else {
+                    alert('❌ Erreur lors de la suppression.');
+                }
+            } catch(e) {
+                alert('⚠️ Serveur inaccessible.');
+            }
+        }
+
         async function enregistrerObservation() {
             const parcelle_id = document.getElementById('obsParcelleId').value;
             const etat = document.getElementById('obsEtat').value;
@@ -168,9 +181,7 @@
             const msg = document.getElementById('obsMsg');
 
             if (!parcelle_id || !etat) {
-                msg.style.display = 'block';
-                msg.style.background = '#fee2e2';
-                msg.style.color = '#991b1b';
+                msg.className = 'form-msg error';
                 msg.textContent = '⚠️ Veuillez choisir une parcelle et un état.';
                 return;
             }
@@ -183,24 +194,18 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    msg.style.display = 'block';
-                    msg.style.background = '#d1fae5';
-                    msg.style.color = '#065f46';
+                    msg.className = 'form-msg success';
                     msg.textContent = '✅ Observation enregistrée !';
                     document.getElementById('obsParcelleId').value = '';
                     document.getElementById('obsEtat').value = '';
                     document.getElementById('obsCommentaire').value = '';
-                    setTimeout(() => { msg.style.display = 'none'; loadObservations(); }, 1000);
+                    setTimeout(() => { msg.className = 'form-msg'; loadObservations(); }, 1000);
                 } else {
-                    msg.style.display = 'block';
-                    msg.style.background = '#fee2e2';
-                    msg.style.color = '#991b1b';
+                    msg.className = 'form-msg error';
                     msg.textContent = '❌ ' + (data.erreur || 'Erreur serveur');
                 }
             } catch(e) {
-                msg.style.display = 'block';
-                msg.style.background = '#fee2e2';
-                msg.style.color = '#991b1b';
+                msg.className = 'form-msg error';
                 msg.textContent = '⚠️ Serveur inaccessible.';
             }
         }

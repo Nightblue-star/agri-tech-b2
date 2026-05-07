@@ -29,7 +29,7 @@
         <div class="topbar-right">
             <div class="user-card">
                 <div class="user-avatar" id="userAvatar">CL</div>
-                <span style="font-size:12px; font-weight:700; color:white;" id="userName">Clyfton</span>
+                <span class="user-name" id="userName">Clyfton</span>
             </div>
         </div>
     </nav>
@@ -40,40 +40,44 @@
     </header>
 
     <main class="main-content">
-        <div class="card" style="padding:24px; margin-bottom:32px; display:flex; gap:15px; align-items:center; margin-top:-40px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:200px;">
-                <input type="text" id="searchInput" placeholder="Chercher une parcelle par nom ou culture…"
-                    oninput="filterParcelles()"
-                    style="width:100%; padding:12px 15px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:14px; font-family:inherit; box-sizing:border-box;">
+        <div class="card parcelles-toolbar">
+            <div class="parcelles-toolbar-search">
+                <input type="text" id="searchInput" class="form-input" placeholder="Chercher une parcelle par nom ou culture…"
+                    oninput="filterParcelles()">
             </div>
             <button class="btn-primary" onclick="openModal()" id="btnAjouter">+ Ajouter une parcelle</button>
         </div>
 
         <!-- Compteur -->
-        <div style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:20px; text-transform:uppercase;" id="compteur">
+        <div class="parcelles-counter" id="compteur">
             Chargement…
         </div>
 
         <div class="stats-grid" id="parcellesGrid">
-            <p style="color:var(--text-muted);">Chargement des parcelles…</p>
+            <p class="text-muted">Chargement des parcelles…</p>
         </div>
     </main>
 
     <!-- Modal ajout parcelle -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
-        <div class="modal" style="max-width:450px;">
-            <h2 class="logo-text" style="color:var(--text-main); margin-bottom:25px; font-size:24px;">Nouvelle parcelle</h2>
-            <div style="display:flex; flex-direction:column; gap:15px;">
-                <input type="text" id="newNom" placeholder="Nom de la parcelle (ex: Le Clos)"
-                    style="padding:12px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:14px;">
-                <input type="text" id="newLocalisation" placeholder="Localisation (ex: Zone A)"
-                    style="padding:12px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:14px;">
-                <input type="number" id="newSurface" placeholder="Surface en hectares" step="0.01" min="0"
-                    style="padding:12px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:14px;">
-                <div id="modalMsg" style="font-size:13px; font-weight:600; display:none; padding:10px; border-radius:8px;"></div>
-                <div style="display:flex; justify-content:flex-end; gap:15px; margin-top:10px;">
-                    <button class="nav-link" style="color:var(--text-muted); padding:0; background:none; border:none; cursor:pointer;" onclick="closeModal()">Annuler</button>
-                    <button class="btn-primary" onclick="ajouterParcelle()" style="padding:10px 25px;">Ajouter</button>
+        <div class="modal">
+            <h2 class="modal-title">Nouvelle parcelle</h2>
+            <div class="modal-form">
+                <input type="number" id="newNumero" class="form-input form-input-sm" placeholder="Numéro de la parcelle (ex: 14)" min="1">
+                <input type="text" id="newLocalisation" class="form-input form-input-sm" placeholder="Localisation (ex: Zone A)">
+                <input type="number" id="newSurface" class="form-input form-input-sm" placeholder="Surface en hectares" step="0.01" min="0">
+                <select id="newCulture" class="form-select form-input-sm">
+                    <option value="">Choisir une culture (optionnel)…</option>
+                    <option value="Blé">🌾 Blé</option>
+                    <option value="Maïs">🌽 Maïs</option>
+                    <option value="Orge">🌿 Orge</option>
+                    <option value="Colza">🌼 Colza</option>
+                    <option value="Tournesol">🌻 Tournesol</option>
+                </select>
+                <div id="modalMsg" class="form-msg"></div>
+                <div class="form-actions">
+                    <button class="btn-link-cancel" onclick="closeModal()">Annuler</button>
+                    <button class="btn-primary" onclick="ajouterParcelle()">Ajouter</button>
                 </div>
             </div>
         </div>
@@ -82,10 +86,10 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         const CULTURE_IMAGES = {
-            'Blé': 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800&auto=format&fit=crop',
-            'Maïs': 'https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=800&auto=format&fit=crop',
-            'Colza': 'https://images.unsplash.com/photo-1470137237906-d8a4f71e1966?q=80&w=800&auto=format&fit=crop',
-            'Orge': 'https://images.unsplash.com/photo-1560472355-536de3962603?q=80&w=800&auto=format&fit=crop',
+            'Blé': 'https://images.unsplash.com/photo-1529511582893-2d7e684dd128?q=80&w=1333&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'Maïs': 'https://images.unsplash.com/photo-1649251037465-72c9d378acb6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'Colza': 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop',
+            'Orge': 'https://images.unsplash.com/photo-1645439164506-84b9c8f53c96?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             'Tournesol': 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?q=80&w=800&auto=format&fit=crop',
         };
         const DEFAULT_IMG = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=800&auto=format&fit=crop';
@@ -107,19 +111,18 @@
             const grid = document.getElementById('parcellesGrid');
             document.getElementById('compteur').textContent = liste.length + ' parcelle(s) trouvée(s)';
             if (liste.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-muted);">Aucune parcelle trouvée.</p>';
+                grid.innerHTML = '<p class="text-muted">Aucune parcelle trouvée.</p>';
                 return;
             }
             grid.innerHTML = liste.map(p => {
                 const img = CULTURE_IMAGES[p.culture] || DEFAULT_IMG;
                 return `
-                <div class="stat-card parcelle-card" data-culture="${p.culture || ''}" data-nom="${p.nom.toLowerCase()}"
-                    style="padding:0; overflow:hidden;">
-                    <div style="height:120px; background:url('${img}') center center; background-size:cover;"></div>
-                    <div style="padding:20px;">
+                <div class="stat-card parcelle-card" data-culture="${p.culture || ''}" data-nom="${p.nom.toLowerCase()}">
+                    <div class="parcelle-card-image" style="background-image:url('${img}');"></div>
+                    <div class="parcelle-card-body">
                         <div class="stat-label">${p.nom}</div>
-                        <div style="font-size:18px; font-weight:700; margin:6px 0;">${p.culture || 'Culture non définie'}</div>
-                        <div style="font-size:13px; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
+                        <div class="parcelle-card-title">${p.culture || 'Culture non définie'}</div>
+                        <div class="parcelle-card-info">
                             <span>📍 ${p.localisation || '—'} · <strong>${p.surface_ha} ha</strong></span>
                         </div>
                     </div>
@@ -138,45 +141,41 @@
         }
 
         async function ajouterParcelle() {
-            const nom = document.getElementById('newNom').value.trim();
+            const numero = document.getElementById('newNumero').value.trim();
             const localisation = document.getElementById('newLocalisation').value.trim();
             const surface_ha = parseFloat(document.getElementById('newSurface').value) || 0;
+            const culture = document.getElementById('newCulture').value;
             const msg = document.getElementById('modalMsg');
 
-            if (!nom) {
-                msg.style.display = 'block';
-                msg.style.background = '#fee2e2';
-                msg.style.color = '#991b1b';
-                msg.textContent = '⚠️ Le nom de la parcelle est obligatoire.';
+            if (!numero) {
+                msg.className = 'form-msg error';
+                msg.textContent = '⚠️ Le numéro de la parcelle est obligatoire.';
                 return;
             }
+
+            const nom = 'Parcelle ' + numero;
 
             try {
                 const res = await fetch('/api/parcelles', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nom, localisation, surface_ha })
+                    body: JSON.stringify({ nom, localisation, surface_ha, culture })
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    msg.style.display = 'block';
-                    msg.style.background = '#d1fae5';
-                    msg.style.color = '#065f46';
+                    msg.className = 'form-msg success';
                     msg.textContent = '✅ Parcelle ajoutée !';
-                    document.getElementById('newNom').value = '';
+                    document.getElementById('newNumero').value = '';
                     document.getElementById('newLocalisation').value = '';
                     document.getElementById('newSurface').value = '';
-                    setTimeout(() => { closeModal(); msg.style.display = 'none'; loadParcelles(); }, 1000);
+                    document.getElementById('newCulture').value = '';
+                    setTimeout(() => { closeModal(); msg.className = 'form-msg'; loadParcelles(); }, 1000);
                 } else {
-                    msg.style.display = 'block';
-                    msg.style.background = '#fee2e2';
-                    msg.style.color = '#991b1b';
+                    msg.className = 'form-msg error';
                     msg.textContent = '❌ ' + (data.erreur || 'Erreur serveur');
                 }
             } catch(e) {
-                msg.style.display = 'block';
-                msg.style.background = '#fee2e2';
-                msg.style.color = '#991b1b';
+                msg.className = 'form-msg error';
                 msg.textContent = '⚠️ Serveur inaccessible.';
             }
         }
