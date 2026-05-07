@@ -15,10 +15,12 @@
 
     <nav class="navbar">
         <div class="nav-brand">
+            <button class="menu-toggle" id="openMenu">☰</button>
             <div class="logo-icon">⛅</div>
             <span class="logo-text">Agri<span>Tech</span></span>
         </div>
-        <div class="nav-menu">
+        <div class="nav-menu" id="mobileMenu">
+            <button class="menu-close" id="closeMenu">✕</button>
             <a href="/home" class="nav-link">Tableau de bord</a>
             <a href="/parcelles" class="nav-link">Parcelles</a>
             <a href="/observations" class="nav-link">Observations</a>
@@ -35,7 +37,7 @@
     </nav>
 
     <header class="hero"
-        style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2000&auto=format&fit=crop');">
+        style="background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1561553543-e4c7b608b98d?q=80&w=2000&auto=format&fit=crop');">
         <p>Conditions en temps réel,</p>
         <h1>Météo &amp; Prévisions</h1>
     </header>
@@ -44,16 +46,30 @@
 
         <!-- Carte météo principale (dernière donnée BDD) -->
         <div class="weather-card weather-hero">
-            <div>
-                <div class="weather-hero-loc">📍 Beauce, Loiret</div>
+            <div class="weather-hero-left">
+                <div class="weather-hero-location-pill">
+                    📍 Beauce, Loiret
+                </div>
                 <div class="weather-hero-temp" id="meteo-temp">—°C</div>
                 <div class="weather-hero-date" id="meteo-date">Chargement…</div>
             </div>
             <div class="weather-hero-right">
                 <div class="weather-hero-emoji" id="meteo-emoji">⏳</div>
-                <div class="weather-hero-details">
-                    Humidité : <strong id="meteo-hum">—</strong>%<br>
-                    Précipitations : <strong id="meteo-pluie">—</strong> mm
+                <div class="weather-hero-stats">
+                    <div class="weather-stat">
+                        <div class="weather-stat-icon">💧</div>
+                        <div>
+                            <div class="weather-stat-label">Humidité</div>
+                            <div class="weather-stat-value"><span id="meteo-hum">—</span>%</div>
+                        </div>
+                    </div>
+                    <div class="weather-stat">
+                        <div class="weather-stat-icon">🌧️</div>
+                        <div>
+                            <div class="weather-stat-label">Précipitations</div>
+                            <div class="weather-stat-value"><span id="meteo-pluie">—</span> mm</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
