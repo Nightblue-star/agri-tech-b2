@@ -44,7 +44,7 @@
 
         <div class="topbar-right">
             <div class="user-card">
-                <div class="user-avatar" id="userAvatar">Admin</div>
+                <div class="user-avatar" id="userAvatar">A</div>
                 <div class="flex-column">
                     <span class="user-name" id="userName">Admin</span>
                     <span class="user-role" id="userRole">Administrateur</span>
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <!-- Alertes récentes depuis l'API -->
+        
         <div class="card animate-fade-up card-recent-alerts">
             <div class="flex-between card-recent-alerts-header">
                 <h3 class="font-jakarta font-size-20">Alertes récentes</h3>
@@ -171,13 +171,13 @@
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        // Mise à jour de la date et heure
+        
         const now = new Date();
         document.getElementById('dateLocation').textContent =
             '📅 ' + now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) +
             ' · 📍 Beauce, Loiret';
 
-        // Récupère les données du dashboard depuis l'API Flask
+        
         async function loadDashboard() {
             try {
                 const res = await fetch('/api/dashboard');
@@ -190,7 +190,7 @@
                 document.getElementById('kpi-alertes').textContent = ind.nombre_alertes ?? '—';
                 document.getElementById('kpi-observations').textContent = ind.nombre_observations ?? '—';
 
-                // Météo
+                
                 const m = data.meteo_actuelle;
                 if (m && m.temperature !== undefined) {
                     document.getElementById('meteo-temp').textContent = m.temperature + '°C';
@@ -198,7 +198,7 @@
                         '💧 Humidité : ' + m.humidite + '% · 🌧️ Pluie : ' + m.pluie_mm + ' mm';
                 }
 
-                // Alertes récentes
+                
                 const alertesList = document.getElementById('alertes-list');
                 if (data.alertes_recentes && data.alertes_recentes.length > 0) {
                     alertesList.innerHTML = data.alertes_recentes.map(a => {
@@ -227,7 +227,7 @@
             }
         }
 
-        // Charge le graphique pluviométrie depuis l'API météo
+        
         async function loadMeteoChart() {
             try {
                 const res = await fetch('/api/meteo');
@@ -255,15 +255,15 @@
                 }
             } catch (err) {
                 console.error('Erreur météo chart:', err);
-                initDashboardChart(); // fallback données en dur
+                initDashboardChart(); 
             }
         }
 
-        // Chargement au démarrage
+        
         loadDashboard();
         loadMeteoChart();
 
-        // Récupère infos utilisateur depuis localStorage si connecté
+        
         const user = JSON.parse(localStorage.getItem('user') || 'null');
         if (user) {
             if (user.nom) {
