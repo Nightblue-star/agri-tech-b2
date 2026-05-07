@@ -1,14 +1,14 @@
 CREATE TABLE Utilisateur (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(100),
-    email VARCHAR(150) UNIQUE,
-    mot_de_passe VARCHAR(255),
-    role VARCHAR(50)
+    nom VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE meteo (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE,
+    date DATE NOT NULL,
     temperature DECIMAL(5,2),
     humidite DECIMAL(5,2),
     pluie_mm DECIMAL(6,2)
@@ -16,7 +16,7 @@ CREATE TABLE meteo (
 
 CREATE TABLE Parcelles (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(100),
+    nom VARCHAR(100) NOT NULL,
     localisation VARCHAR(255),
     surface_ha DECIMAL(8,2),
     utilisateur_id INT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE Parcelles (
 
 CREATE TABLE Cultures (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    type VARCHAR(100),
+    type VARCHAR(100) NOT NULL,
     date_semis DATE,
     parcelle_id INT NOT NULL,
     FOREIGN KEY (parcelle_id) REFERENCES Parcelles(id)
@@ -33,11 +33,11 @@ CREATE TABLE Cultures (
 
 CREATE TABLE observations (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE,
+    date DATE NOT NULL,
     etat VARCHAR(100),
     commentaire TEXT,
     utilisateur_id INT NOT NULL,
-    meteo_id INT NOT NULL,
+    meteo_id INT NULL,
     parcelle_id INT NOT NULL,
     FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id),
     FOREIGN KEY (meteo_id) REFERENCES meteo(id),
@@ -46,11 +46,11 @@ CREATE TABLE observations (
 
 CREATE TABLE alertes (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE,
-    type VARCHAR(100),
+    date DATE NOT NULL,
+    type VARCHAR(100) NOT NULL,
     niveau VARCHAR(50),
     parcelle_id INT NOT NULL,
-    observation_id INT NULL,
+    observation_id INT NOT NULL,
     FOREIGN KEY (parcelle_id) REFERENCES Parcelles(id),
     FOREIGN KEY (observation_id) REFERENCES observations(id)
 );
