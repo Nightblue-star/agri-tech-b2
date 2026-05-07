@@ -1,10 +1,3 @@
-/* 
-   ==========================================================================
-   VARIABLES ET THEME
-   Nous avons regroupé nos couleurs et nos rayons de bordure ici pour 
-   pouvoir ajuster le look du site rapidement sans chercher partout.
-   ========================================================================== 
-*/
 
 :root {
     --primary: #0d9488;         
@@ -47,13 +40,7 @@ body {
     min-height: 100vh;
 }
 
-/* 
-   ==========================================================================
-   NAVIGATION
-   Nous avons mis la barre en haut pour gagner de la place en hauteur sur le tableau de bord.
-   On a choisi des couleurs sombres pour que ça ressorte bien sur le fond clair.
-   ========================================================================== 
-*/
+
 
 .navbar {
     height: 80px;
@@ -129,13 +116,6 @@ body {
     height: 18px;
 }
 
-/* 
-   ==========================================================================
-   SECTION HERO
-   C'est ici qu'on gère l'image de fond principale. Nous avons mis un dégradé 
-   sombre par-dessus pour que le texte blanc soit toujours lisible.
-   ========================================================================== 
-*/
 
 .hero {
     /* Nous fixons la hauteur du Hero pour qu'il soit imposant sans masquer tout le contenu */
@@ -159,7 +139,6 @@ body {
     left: 0;
     right: 0;
     height: 150px;
-    /* Nous avons mis un fondu vers le bas pour que l'image s'intègre bien avec le reste de la page */
     background: linear-gradient(to top, var(--bg-app), transparent); 
 }
 
@@ -175,12 +154,7 @@ body {
     opacity: 0.9;
 }
 
-/* 
-   ==========================================================================
-   ORGANISATION DU CONTENU
-   Layout principal et structure des conteneurs de données.
-   ========================================================================== 
-*/
+
 
 .main-content {
     padding: 40px 5%;
@@ -219,12 +193,6 @@ body {
     font-size: 10px;
 }
 
-/* 
-   ==========================================================================
-   GRILLES ET CARTES (CARDS)
-   Composants de visualisation de données et statistiques.
-   ========================================================================== 
-*/
 
 .stats-grid {
     display: grid;
@@ -236,7 +204,6 @@ body {
 
 .stat-card {
     background: rgba(255, 255, 255, 0.7);
-    /* Nous avons ajouté un effet de flou pour donner un côté premium "verre trempé" aux cartes */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 30px;
@@ -301,19 +268,18 @@ body {
 }
 
 @keyframes float {
-    /* Petite animation de flottement pour rendre l'interface un peu plus vivante */
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 }
 
-/* Styles des icônes de statut (Gradients & Effets) */
+
 .icon-purple { background: linear-gradient(135deg, #a855f7, #7c3aed); box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4); border-color: rgba(255,255,255,0.4); }
 .icon-gold { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); border-color: rgba(255,255,255,0.4); }
 .icon-pink { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4); border-color: rgba(255,255,255,0.4); }
 .icon-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); border-color: rgba(255,255,255,0.4); }
 
-/* Classes Utilitaires pour nettoyer le HTML */
+
 .text-danger { color: var(--danger) !important; }
 .text-primary-dark { color: var(--primary-dark) !important; }
 .text-muted-70 { opacity: 0.7; }
@@ -431,7 +397,6 @@ body {
     box-shadow: 0 50px 100px rgba(0, 0, 0, 0.1);
 }
 
-/* Style des puces de santé dans le tableau */
 .status-pill {
     padding: 6px 12px;
     border-radius: 12px;
@@ -471,7 +436,7 @@ body {
     padding: 16px 24px;
 }
 
-/* Modules interactifs et widgets (Météo, Charts) */
+
 .weather-card {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
@@ -483,24 +448,52 @@ body {
     padding: 20px;
 }
 
-/* Adaptabilité responsive (Tablettes & Mobiles) */
+
 @media (max-width: 1024px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .dashboard-grid { grid-template-columns: 1fr; }
-    .navbar { padding: 0 20px; }
-    .nav-menu { display: none; } 
-}
-@media (max-width: 600px) {
-    .stats-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 32px; }
+    .menu-toggle { 
+        display: block; 
+        background: none; 
+        border: none; 
+        color: white; 
+        font-size: 24px; 
+        margin-right: 15px;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed; 
+        top: 0;
+        left: -100%; 
+        width: 280px;
+        height: 100vh;
+        background: var(--bg-nav);
+        padding: 60px 20px;
+        transition: 0.4s; 
+        z-index: 1000;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .menu-close {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+    }
 }
 
-/* 
-   ==========================================================================
-   SECTION SANTÉ DES CULTURES
-   Affichage détaillé de l'état sanitaire par parcelle.
-   ========================================================================== 
-*/
+
+@media (min-width: 1025px) {
+    .menu-toggle, .menu-close { display: none; }
+}
+
 
 .crop-health-list {
     display: flex;
