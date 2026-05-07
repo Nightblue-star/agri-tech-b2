@@ -1,2 +1,0 @@
-https://agri-tech-b2.vercel.app
-https://github.com/Nightblue-star/agri-tech-b2.git 
